@@ -7,6 +7,9 @@ import { makeStyles } from "@material-ui/core/styles";
 import * as Yup from "yup";
 import Button from "@material-ui/core/Button";
 import { withRouter, Link } from "react-router-dom";
+import axios from "axios";
+import { setToken,initAxiosInterceptors,setUserId } from "../utils/auth-helper";
+import * as gVar from "../utils/properties";
 
 const Login = () => {
   const useStyles = makeStyles((theme) => ({
@@ -21,10 +24,37 @@ const Login = () => {
 
   const validation = Yup.object().shape({
     dni: Yup.string()
-    .min(6, "El dni debe contener 6 caracteres o más")
+    .min(3, "El dni debe contener 3 caracteres o más")
     .required("requerido"),
     contraseña: Yup.string().required("requerido"),
   });
+
+  const [email, setEmail] = useState('');
+  const [pass, setPass] = useState('');
+
+  const [cargando, setCargando] = useState(false)
+
+  const LogIn = () => {
+    setCargando(true);
+     axios({
+      method: "POST",
+      url: gVar.api + "/api/auth/signin",
+      data: {"email": email , "password": pass },
+      headers: { 'Content-Type': 'application/json' }
+      })
+      .then(response => {
+        setToken(response.data.token);
+        setUserId(response.data.userId);
+        initAxiosInterceptors();
+        setCargando(false);
+        //resetStackAndNavigate(navigation,'home');
+      })          
+      .catch(function(error) {
+        //Alert.alert("Error","Mensaje: " + error.response.data.error)
+        setCargando(false);
+      });
+};
+
   const formik = useFormik({
     initialValues: {
       dni: "",
@@ -32,9 +62,12 @@ const Login = () => {
     },
     validationSchema: validation,
     onSubmit: (values) => {
+      console.log("test: " + values);
       const { dni, contraseña } = values;
+      
     },
   });
+
   return (
     <div>
       <Header />
@@ -80,14 +113,14 @@ const Login = () => {
                 error={formik.errors.contraseña}
               />
             </FormControl>
-            <Link to="/vales" style={{ textDecoration: "none",alignSelf: "center" }}>
+
             <Button
               style={{ alignSelf: "center" ,textTransform: "none"}}
               variant="contained"
-              type= 'submit'
-            >
+              type= 'submit'>
               Ingresar
             </Button>
+            <Link to="/vales" style={{ textDecoration: "none",alignSelf: "center" }}>
             </Link>
             <br/>
           </form>
