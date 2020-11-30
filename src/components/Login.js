@@ -8,10 +8,17 @@ import * as Yup from "yup";
 import Button from "@material-ui/core/Button";
 import { withRouter, Link } from "react-router-dom";
 import axios from "axios";
-import { setToken,initAxiosInterceptors,setUserId } from "../utils/auth-helper";
+import { setToken,initAxiosInterceptors,setUser,getUser } from "../utils/auth-helper";
 import * as gVar from "../utils/properties";
+//import stringifyObject from "stringify-object";
+
+
+import { useAlert } from 'react-alert';
 
 const Login = () => {
+
+  const alert = useAlert();
+
   const useStyles = makeStyles((theme) => ({
     formControl: {
       width: "100%",
@@ -26,31 +33,36 @@ const Login = () => {
     dni: Yup.string()
     .min(3, "El dni debe contener 3 caracteres o más")
     .required("requerido"),
-    contraseña: Yup.string().required("requerido"),
+    password: Yup.string().required("requerido"),
   });
-
-  const [email, setEmail] = useState('');
-  const [pass, setPass] = useState('');
 
   const [cargando, setCargando] = useState(false)
 
-  const LogIn = () => {
+  const LogIn = (dni,password) => {
     setCargando(true);
      axios({
       method: "POST",
       url: gVar.api + "/api/auth/signin",
-      data: {"email": email , "password": pass },
+      data: {"dni": dni , "password": password },
       headers: { 'Content-Type': 'application/json' }
       })
       .then(response => {
+        //const { userId, Nombre,Email,IdTipoDeUsuario,IdGerencia,IdJefeDirecto,token,Gerencia,CambioPassObligatorio } = response.data;
         setToken(response.data.token);
-        setUserId(response.data.userId);
+        setUser(response.data);
         initAxiosInterceptors();
         setCargando(false);
+        alert.show("Bienvenido " +  getUser().Nombre);
+        //aca tendria que ir al menu y no poder volver
         //resetStackAndNavigate(navigation,'home');
       })          
       .catch(function(error) {
-        //Alert.alert("Error","Mensaje: " + error.response.data.error)
+
+        if (error.response == undefined)
+          alert.show("" + error);
+        else
+          alert.show("" + error.response.data.error);
+
         setCargando(false);
       });
 };
@@ -58,16 +70,15 @@ const Login = () => {
   const formik = useFormik({
     initialValues: {
       dni: "",
-      contraseña: "",
+      password: "",
     },
     validationSchema: validation,
     onSubmit: (values) => {
-      console.log("test: " + values);
-      const { dni, contraseña } = values;
-      
+      const { dni, password } = values;
+      LogIn(dni,password);
     },
   });
-
+  
   return (
     <div>
       <Header />
@@ -106,20 +117,17 @@ const Login = () => {
                 style={{ marginBottom: "2%" }}
                 placeholder="Ingresá la contraseña"
                 //disabled={true}
-                id="contraseña"
-                name="contraseña"
+                id="password"
+                name="password"
                 variant="outlined"
-                helperText= {formik.errors.contraseña}
-                error={formik.errors.contraseña}
+                helperText= {formik.errors.password}
+                error={formik.errors.password}
               />
             </FormControl>
-
             <Button
               style={{ alignSelf: "center" ,textTransform: "none"}}
               variant="contained"
-              type= 'submit'>
-              Ingresar
-            </Button>
+              type= 'submit'>Ingresar</Button>
             <Link to="/vales" style={{ textDecoration: "none",alignSelf: "center" }}>
             </Link>
             <br/>

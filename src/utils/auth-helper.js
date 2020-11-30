@@ -5,25 +5,24 @@ import React from 'react';
 //import { CommonActions } from '@react-navigation/native';
 
 const TOKEN_KEY = "SxnL";
-
+const USER_KEY = "User";
 
 export function setToken(token) {
-  //SyncStorage.set(TOKEN_KEY, token);
   localStorage.setItem(TOKEN_KEY, token)
 }
 export function getToken() {
-  //return SyncStorage.get(TOKEN_KEY);
   return localStorage.getItem(TOKEN_KEY);
 }
 
-export function setUserId(userId) {
-  //SyncStorage.set("userId", userId);
-  //SecureStore.setItemAsync("userId", userId);
+export function setUser(user) {
+  //convierto a json el response del objeto
+  localStorage.setItem(USER_KEY, JSON.stringify(user))
 }
 
-export function getUserId() {
-  //return SyncStorage.get("userId");
-  //return SecureStore.getItemAsync("userId", userId);
+export function getUser() {
+  //esto era lo pase json asi que lo vuelvo a obj
+  var retrievedObject = localStorage.getItem(USER_KEY);
+  return JSON.parse(retrievedObject)
 }
 
 export async function getCurrentUser() {
