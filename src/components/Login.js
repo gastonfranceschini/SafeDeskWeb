@@ -11,8 +11,6 @@ import axios from "axios";
 import { setToken,initAxiosInterceptors,setUser,getUser } from "../utils/auth-helper";
 import * as gVar from "../utils/properties";
 //import stringifyObject from "stringify-object";
-
-
 import { useAlert } from 'react-alert';
 
 const Login = () => {
@@ -47,7 +45,6 @@ const Login = () => {
       headers: { 'Content-Type': 'application/json' }
       })
       .then(response => {
-        //const { userId, Nombre,Email,IdTipoDeUsuario,IdGerencia,IdJefeDirecto,token,Gerencia,CambioPassObligatorio } = response.data;
         setToken(response.data.token);
         setUser(response.data);
         initAxiosInterceptors();
