@@ -6,9 +6,8 @@ import { FormControl, TextField, InputLabel } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import * as Yup from "yup";
 import Button from "@material-ui/core/Button";
-import { withRouter, Link } from "react-router-dom";
-import axios from "axios";
-import { setToken,initAxiosInterceptors,setUser,getUser } from "../utils/auth-helper";
+import { withRouter, Link, Redirect } from "react-router-dom";
+import { setToken,initAxiosInterceptors,setUser,getUser,getToken } from "../utils/auth-helper";
 import * as Auth from "../apis/AuthAPI";
 //import stringifyObject from "stringify-object";
 import { useAlert } from 'react-alert';
@@ -35,6 +34,7 @@ const Login = () => {
   });
 
   const [cargando, setCargando] = useState(false)
+  const [logged, setLogged] = useState(false)
 
   const LogIn = (dni,password) => {
     setCargando(true);
@@ -46,6 +46,7 @@ const Login = () => {
       initAxiosInterceptors();
       setCargando(false);
       alert.show("Bienvenido " +  getUser().Nombre);
+      setLogged(true);
     })          
     .catch(function(error) {
 
@@ -125,6 +126,7 @@ const Login = () => {
             <br/>
           </form>
         </Container>
+        { logged ? <Redirect to="/Home" /> : null }
       </div>
     </div>
   );
