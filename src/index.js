@@ -13,10 +13,6 @@ const options = {
   transition: 'scale'
 }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> e7a68fbd513032bc5c655b8f108da59be2ae168a
 ReactDOM.render(
   
   <React.StrictMode>

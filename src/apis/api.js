@@ -1,17 +1,21 @@
 import axios from 'axios';
 
-    //"https://safedesk.apiexperta.com.ar";
-    //"http://35.190.67.223";
-    //"http://10.0.2.2:3000/api/reportes/test";
-
-export const api = axios.create({
-	baseURL: 'https://safedesk.apiexperta.com.ar',
+export const apiProvider = axios.create({
+	baseURL: process.env.REACT_APP_API_URL, //'https://safedesk.apiexperta.com.ar',
 	headers: {
 			'Content-Type': 'application/json'
-	},
+	}
 })
 
-export const getUsuario = async (values) => {
-    const url = `api/auth/signin/${values}`
-    return await api.get(url);
+const getInstance = () => {
+    let params = { baseURL: process.env.REACT_APP_API_URL , 
+	headers: {'Content-Type': 'application/json'}};
+    const _httpInstancia = axios.create(params);
+    return _httpInstancia;
 }
+
+const http = getInstance();
+
+export {
+    http
+};
