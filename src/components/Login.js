@@ -6,11 +6,13 @@ import { FormControl, TextField, InputLabel } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import * as Yup from "yup";
 import Button from "@material-ui/core/Button";
-import { withRouter, Link } from "react-router-dom";
+import { withRouter, Link, Redirect } from "react-router-dom";
 import axios from "axios";
-import { setToken,initAxiosInterceptors,setUser,getUser } from "../utils/auth-helper";
+import { setToken, initAxiosInterceptors, setUser, getUser } from "../utils/auth-helper";
 import * as gVar from "../utils/properties";
 //import stringifyObject from "stringify-object";
+
+import Home from "./Home";
 
 
 import { useAlert } from 'react-alert';
@@ -37,35 +39,33 @@ const Login = () => {
   });
 
   const [cargando, setCargando] = useState(false)
+  const [token, setToken] = useState(false)
 
-  const LogIn = (dni,password) => {
-    setCargando(true);
-     axios({
-      method: "POST",
-      url: gVar.api + "/api/auth/signin",
-      data: {"dni": dni , "password": password },
-      headers: { 'Content-Type': 'application/json' }
-      })
-      .then(response => {
-        //const { userId, Nombre,Email,IdTipoDeUsuario,IdGerencia,IdJefeDirecto,token,Gerencia,CambioPassObligatorio } = response.data;
-        setToken(response.data.token);
-        setUser(response.data);
-        initAxiosInterceptors();
-        setCargando(false);
-        alert.show("Bienvenido " +  getUser().Nombre);
-        //aca tendria que ir al menu y no poder volver
-        //resetStackAndNavigate(navigation,'home');
-      })          
-      .catch(function(error) {
+  const LogIn = async (dni,password) => {
+      setCargando(true);
 
-        if (error.response == undefined)
-          alert.show("" + error);
-        else
-          alert.show("" + error.response.data.error);
+      const resp = await axios({
+        method: "POST",
+        url: gVar.api + "/api/auth/signin",
+        data: {"dni": dni , "password": password },
+        headers: { 'Content-Type': 'application/json' }
+      }).then(response => {
+          //const { userId, Nombre,Email,IdTipoDeUsuario,IdGerencia,IdJefeDirecto,token,Gerencia,CambioPassObligatorio } = response.data;
+          setToken(response.data.token);
+          setUser(response.data);
+          initAxiosInterceptors();
+          setCargando(false);
+          alert.show("Bienvenido " +  getUser().Nombre);
+          setToken(true)
+      }).catch(function(error) {
+          if (error.response == undefined)
+            alert.show("" + error);
+          else
+            alert.show("" + error.response.data.error);
 
-        setCargando(false);
+          setCargando(false);
       });
-};
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -133,6 +133,7 @@ const Login = () => {
             <br/>
           </form>
         </Container>
+        { token ? <Redirect to="/Home" /> : null }
       </div>
     </div>
   );
