@@ -7,19 +7,18 @@ import { makeStyles } from "@material-ui/core/styles";
 import * as Yup from "yup";
 import Button from "@material-ui/core/Button";
 import { withRouter, Link, Redirect } from "react-router-dom";
-import axios from "axios";
-import { setToken, initAxiosInterceptors, setUser, getUser } from "../utils/auth-helper";
-import * as gVar from "../utils/properties";
+import { setToken,initAxiosInterceptors,setUser,getUser,getToken } from "../utils/auth-helper";
+import * as Auth from "../apis/AuthAPI";
 //import stringifyObject from "stringify-object";
-
-import Home from "./Home";
-
-
 import { useAlert } from 'react-alert';
 
 const Login = () => {
 
   const alert = useAlert();
+
+  useEffect(() => {
+    console.log("Login Loaded");
+  }, []);
 
   const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -39,33 +38,31 @@ const Login = () => {
   });
 
   const [cargando, setCargando] = useState(false)
-  const [token, setToken] = useState(false)
+  const [logged, setLogged] = useState(false)
 
-  const LogIn = async (dni,password) => {
-      setCargando(true);
+  const LogIn = (dni,password) => {
+    setCargando(true);
 
-      const resp = await axios({
-        method: "POST",
-        url: gVar.api + "/api/auth/signin",
-        data: {"dni": dni , "password": password },
-        headers: { 'Content-Type': 'application/json' }
-      }).then(response => {
-          //const { userId, Nombre,Email,IdTipoDeUsuario,IdGerencia,IdJefeDirecto,token,Gerencia,CambioPassObligatorio } = response.data;
-          setToken(response.data.token);
-          setUser(response.data);
-          initAxiosInterceptors();
-          setCargando(false);
-          alert.show("Bienvenido " +  getUser().Nombre);
-          setToken(true)
-      }).catch(function(error) {
-          if (error.response == undefined)
-            alert.show("" + error);
-          else
-            alert.show("" + error.response.data.error);
+    Auth.loginUser(dni,password)
+    .then(response => {
+      setToken(response.data.token);
+      setUser(response.data);
+      initAxiosInterceptors();
+      setCargando(false);
+      alert.show("Bienvenido " +  getUser().Nombre);
+      setLogged(true);
+    })          
+    .catch(function(error) {
 
-          setCargando(false);
-      });
-  };
+      if (error.response == undefined)
+        alert.show("" + error);
+      else
+        alert.show("" + error.response.data.error);
+
+      setCargando(false);
+    });
+    
+};
 
   const formik = useFormik({
     initialValues: {
@@ -133,7 +130,7 @@ const Login = () => {
             <br/>
           </form>
         </Container>
-        { token ? <Redirect to="/Home" /> : null }
+        { logged ? <Redirect to="/Home" /> : null }
       </div>
     </div>
   );
