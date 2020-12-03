@@ -16,6 +16,10 @@ const Login = () => {
 
   const alert = useAlert();
 
+  useEffect(() => {
+    console.log("Login Loaded");
+  }, []);
+
   const useStyles = makeStyles((theme) => ({
     formControl: {
       width: "100%",
