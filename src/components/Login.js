@@ -133,7 +133,6 @@ const Login = () => {
             <br/>
           </form>
         </Container>
-        {console.log(token)}
         { token ? <Redirect to="/Home" /> : null }
       </div>
     </div>
