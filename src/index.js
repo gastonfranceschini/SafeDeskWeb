@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import './utils/index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Provider as AlertProvider } from 'react-alert'
@@ -13,7 +13,10 @@ const options = {
   transition: 'scale'
 }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> e7a68fbd513032bc5c655b8f108da59be2ae168a
 ReactDOM.render(
   
   <React.StrictMode>
@@ -25,7 +28,4 @@ ReactDOM.render(
   document.getElementById('root')
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
