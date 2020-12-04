@@ -10,11 +10,7 @@ import { withRouter, Link, Redirect } from "react-router-dom";
 import axios from "axios";
 import { setToken, initAxiosInterceptors, setUser, getUser } from "../utils/auth-helper";
 import * as gVar from "../utils/properties";
-//import stringifyObject from "stringify-object";
-
 import Home from "./Home";
-
-
 import { useAlert } from 'react-alert';
 
 const Login = () => {
