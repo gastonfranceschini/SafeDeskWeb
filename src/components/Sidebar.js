@@ -5,6 +5,9 @@ import {SidebarData} from './SidebarData';
 function Sidebar() {
     return (
         <div className='Sidebar'>
+            <header>
+                NOMBRE DEL CHABONCITO
+            </header>
             <ul className='SidebarList'>
                 {SidebarData.map((val, key)=> {
                     return (
@@ -15,7 +18,7 @@ function Sidebar() {
                             onClick={()=>{
                                 window.location.pathname = val.link;
                             }}>
-                            <div>{val.icon}</div> <div id='title'>{val.title}</div>
+                            <div id="icon">{val.icon}</div> <div id='title'>{val.title}</div>
                         </li>
                     );
                 })}
