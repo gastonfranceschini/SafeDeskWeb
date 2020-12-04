@@ -9,23 +9,23 @@ import Sidebar from './components/Sidebar';
 
 
 import './utils/App.css';
+
 import Home from './components/Home';
+import Diagnostico from './components/Diagnostico';
 
 class App extends Component {
   render() {
     return ( 
       <Router>
-      <Switch>
-        <Route exact path="/Login" component={Login} />
-        <Route exact path="/Sidebar" component={Sidebar} />
-        <Route exact path="/Home" exact component={Home}/>
-        <Route exact path = "/Administracion" component={Administracion} /> 
-        <Route exact path = "/Reporte" component={Reporte} /> 
-        <Route exact path = "/MisReservas" component={MisReservas} /> 
-
-      </Switch>
-    </Router>
-
+        <Switch>
+          <Route exact path="/" component={Login} />
+          <Route exact path="/Home" component={Home}/>
+          <Route exact path="/Diagnostico" component={Diagnostico} />
+          <Route exact path="/Administracion" component={Administracion} /> 
+          <Route exact path="/Reporte" component={Reporte} /> 
+          <Route exact path="/MisReservas" component={MisReservas} /> 
+        </Switch>
+      </Router>
     );
   };
 }
