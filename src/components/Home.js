@@ -1,13 +1,17 @@
 import React from 'react';
+import Sidebar from './Sidebar';
+import '../utils/App.css';
 import Header from '../shared/Header'
+
 
 const Home = (props) => {
   return ( 
-    <div>
-    <Header />
-    <h1>HOME</h1>
+    <div className="App">
+      <Header />
+      <Sidebar />
     </div>
   );
-}
+  }
+
  
 export default Home;

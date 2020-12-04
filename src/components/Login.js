@@ -17,8 +17,10 @@ const Login = () => {
   const alert = useAlert();
 
   useEffect(() => {
-    console.log("Login Loaded");
-		if (getToken()) {setLogged(true);}
+    if (getToken()) 
+    {
+      setLogged(true);
+    }
   }, []);
 
   const useStyles = makeStyles((theme) => ({
@@ -130,7 +132,7 @@ const Login = () => {
             <br/>
           </form>
         </Container>
-        { logged ? <Redirect to="/Home" /> : null }
+        { logged ? <Redirect to="/Home"/> : null }
       </div>
     </div>
   );

@@ -10,19 +10,19 @@ const Header = () => {
   const alert = useAlert();
   const CONFIG_TURNOS = "TurnosActivo";
   const CONFIG_DIAGNOSTICOS = "DiagnosticosActivo";
-  const [logged, setLogged] = useState(false);
+  //const [logged, setLogged] = useState(false);
 
-  useEffect(() => {
+  /*useEffect(() => {
     console.log("Header Loaded");
     //alert.show("TokEn " + getToken());
     if (getToken())
     {
-      setLogged(true);
+      //setLogged(true);
       getConfig(CONFIG_TURNOS);
       getConfig(CONFIG_DIAGNOSTICOS);
     }
 
-  }, []);
+  }, []);*/
   
   const getConfig = (nombreConfig) => {
 
@@ -40,7 +40,13 @@ const Header = () => {
   };
 
   const handleLogOut = () => {
-    logoutUser();
+  //  logoutUser();
+  /*
+          { logged ? 
+          <button onClick={handleLogOut}>
+            Cerrar Sesion
+          </button>
+        : null }*/
   }
 
     return(
@@ -52,13 +58,6 @@ const Header = () => {
             alt="Experta logo"
           />
         </Paper>
-
-        { logged ? 
-          <button onClick={handleLogOut}>
-            Cerrar Sesion
-          </button>
-        : null }
-
       </div>
     );
 }

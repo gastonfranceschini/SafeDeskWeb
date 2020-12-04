@@ -7,8 +7,8 @@ const USER_KEY = "User";
 
 //Logout
 export function logoutUser() {
-  localStorage.setItem(TOKEN_KEY, null);
-  localStorage.setItem(USER_KEY, null);
+  localStorage.removeItem(USER_KEY);
+  localStorage.removeItem(TOKEN_KEY);
 }
 
 export function setToken(token) {
