@@ -3,26 +3,24 @@ import Header from "../shared/Header"
 import Container from "@material-ui/core/Container"
 
 
-const Administracion = (prop) => {
+const MisReservas = (prop) => {
     return (  
     
         <div>
-        <Header />
+        <Header/>
              <div>
           <Container maxWidth="sm">
-            <h1>Deshabilitar reserva de turnos</h1>
-            <h1>Deshabilitar Autodiagnostico</h1>
+            <h1>reservasdsada</h1>
+            <h1>Deshasdasd</h1>
             </Container>
             </div>
         </div>
 
 
-        
-
+    
 
     )
 }
 
 
-
-export default Administracion;
+export default MisReservas;

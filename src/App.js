@@ -2,6 +2,9 @@ import React, { Component, useEffect, useState } from "react";
 import './App.css';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Login from './components/Login';
+import Administracion from './components/Administracion'
+import Reporte from "./components/Reporte";
+import MisReservas from "./components/MisReservas";
 
 
 function Home (){
@@ -15,9 +18,11 @@ class App extends Component {
     return (
       <Router>
       <Switch>
-        <Route path="/" exact component={Home}>
-          <Home />
-        </Route>
+        <Route exact path="/" exact component={Home}/>
+        <Route exact path = "/Administracion" component={Administracion} /> 
+        <Route exact path = "/Reporte" component={Reporte} /> 
+        <Route exact path = "/MisReservas" component={MisReservas} /> 
+
       </Switch>
     </Router>
     );
