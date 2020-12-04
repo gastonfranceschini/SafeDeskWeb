@@ -3,7 +3,7 @@ import "../utils/App.css";
 import {SidebarData} from './SidebarData';
 import * as ReportesAPI from "../apis/ReportesAPI";
 import { useAlert } from 'react-alert';
-import { logoutUser,getToken } from "../utils/auth-helper";
+import { logoutUser,getToken,getUser } from "../utils/auth-helper";
 
 function Sidebar() {
 
@@ -36,8 +36,8 @@ function Sidebar() {
 
     return (
         <div className='Sidebar'>
-            <header>
-                NOMBRE DEL CHABONCITO
+            <header style={{ marginLeft: "40%", color : 'white'}}>
+                {getUser().Nombre}
             </header>
             <ul className='SidebarList'>
                 {SidebarData.map((val, key)=> {
