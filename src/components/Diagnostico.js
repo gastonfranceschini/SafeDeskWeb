@@ -4,6 +4,7 @@ import Button from "@material-ui/core/Button";
 import { Container, Checkbox, FormControl, FormGroup, FormControlLabel, FormHelperText } from "@material-ui/core";
 import { useFormik } from "formik";
 
+import * as Api from '../apis/DiagnosticosAPI';
 import Header from '../shared/Header';
 
 const Diagnostico = (props) => {
@@ -39,8 +40,22 @@ const Diagnostico = (props) => {
   const error = [temperatura, gusto, contacto, embarazada, cancer, diabetes, hepatica, olfato, garganta, respiratoria].filter(v => v).length !== 2;
 
   const formik = useFormik({
-    // onSubmit: (values) => {
-    // },
+    initialValues: {
+      temperatura: "",
+      gusto: "",
+      contacto: "",
+      embarazada: "", 
+      cancer: "",
+      diabetes: "", 
+      hepatica: "", 
+      olfato: "", 
+      garganta: "", 
+      respiratoria: ""
+    },
+    onSubmit: (values) => {
+      const { emperatura, gusto, contacto, embarazada, cancer, diabetes, hepatica, olfato, garganta, respiratoria } = values;
+      Api.saveDiagnostico(temperatura, gusto, contacto, embarazada, cancer, diabetes, hepatica, olfato, garganta, respiratoria)
+    },
   });
 
   return ( 

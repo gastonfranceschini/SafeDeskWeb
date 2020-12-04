@@ -12,7 +12,7 @@ export const saveDiagnostico = async ( temp,  perdioGusto,  contacto,  estoyEmba
      cancer,  diabetes,  hepatica,  perdioOlfato,
      dolorGarganta,  dificultadRespiratoria) => {
     const url = endpointBase
-    var data =  {"Temperatura": temp , "PerdioGusto": perdioGusto  , "ContactoCercano": contacto,
+    let data =  {"Temperatura": temp , "PerdioGusto": perdioGusto  , "ContactoCercano": contacto,
     "EstoyEmbarazada": estoyEmbarazada , "Cancer": cancer  , "Diabetes": diabetes,
     "Hepatica": hepatica , "PerdioOlfato": perdioOlfato  , "DolorGarganta": dolorGarganta, "DificultadRespiratoria" : dificultadRespiratoria}
 
