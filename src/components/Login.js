@@ -7,7 +7,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import * as Yup from "yup";
 import Button from "@material-ui/core/Button";
 import { withRouter, Link, Redirect } from "react-router-dom";
-import { setToken,initAxiosInterceptors,setUser,getUser,getToken } from "../utils/auth-helper";
+import { setToken,setUser,getUser,getToken } from "../utils/auth-helper";
 import * as Auth from "../apis/AuthAPI";
 //import stringifyObject from "stringify-object";
 import { useAlert } from 'react-alert';
@@ -18,6 +18,7 @@ const Login = () => {
 
   useEffect(() => {
     console.log("Login Loaded");
+		if (getToken()) {setLogged(true);}
   }, []);
 
   const useStyles = makeStyles((theme) => ({
@@ -47,7 +48,7 @@ const Login = () => {
     .then(response => {
       setToken(response.data.token);
       setUser(response.data);
-      initAxiosInterceptors();
+      //initAxiosInterceptors();
       setCargando(false);
       alert.show("Bienvenido " +  getUser().Nombre);
       setLogged(true);

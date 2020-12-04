@@ -2,11 +2,11 @@ import Paper from "@material-ui/core/Paper";
 import React, { useState, useEffect } from 'react';
 import * as ReportesAPI from "../apis/ReportesAPI";
 import { useAlert } from 'react-alert';
-
+import { logoutUser,getToken } from "../utils/auth-helper";
 
 
 const Header = () => {
-  
+
   const alert = useAlert();
   const CONFIG_TURNOS = "TurnosActivo";
   const CONFIG_DIAGNOSTICOS = "DiagnosticosActivo";
@@ -14,10 +14,14 @@ const Header = () => {
 
   useEffect(() => {
     console.log("Header Loaded");
+    //alert.show("TokEn " + getToken());
+    if (getToken())
+    {
+      setLogged(true);
+      getConfig(CONFIG_TURNOS);
+      getConfig(CONFIG_DIAGNOSTICOS);
+    }
 
-    //setLogged(true);
-    getConfig(CONFIG_TURNOS);
-    getConfig(CONFIG_DIAGNOSTICOS);
   }, []);
   
   const getConfig = (nombreConfig) => {
@@ -35,6 +39,10 @@ const Header = () => {
     });
   };
 
+  const handleLogOut = () => {
+    logoutUser();
+  }
+
     return(
         <div className="loginheader">
         <Paper elevation={3}>
@@ -44,6 +52,13 @@ const Header = () => {
             alt="Experta logo"
           />
         </Paper>
+
+        { logged ? 
+          <button onClick={handleLogOut}>
+            Cerrar Sesion
+          </button>
+        : null }
+
       </div>
     );
 }
