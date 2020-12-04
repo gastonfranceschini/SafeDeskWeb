@@ -84,8 +84,8 @@ const Login = () => {
       <Header />
       <div>
         <Container maxWidth="sm">
-          <h1>SAFE DESK</h1>
-          <p>Para comenzar Ingresá tu DNI y contraseña.</p>
+          <h1 className='ExpertaText' style={{ fontSize : "50px" }}>SAFE DESK</h1>
+          <p>Para comenzar ingresá tu DNI y contraseña.</p>
           <form
             onSubmit={formik.handleSubmit}
             style={{
@@ -116,6 +116,7 @@ const Login = () => {
                 className={classes.textField}
                 style={{ marginBottom: "2%" }}
                 placeholder="Ingresá la contraseña"
+                 type="password"
                 //disabled={true}
                 id="password"
                 name="password"

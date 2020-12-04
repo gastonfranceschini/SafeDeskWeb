@@ -13,7 +13,9 @@ import {
     Button,
     Zoom,
   } from "@material-ui/core";
+
 import Header from '../shared/Header';
+import Sidebar from './Sidebar';
 
 const isWeekday = (date) => {
     const day = getDay(date);
@@ -66,13 +68,14 @@ const Reserva = () => {
       }
 
     return (
-    <FormControl>
-        <div>
-            <Header />
-        </div>
+    <div>
+      <Header />
+      <Sidebar />
+      <div>
         <Container maxWidth="sm">
-        <h1>Reserva tu Turno</h1>
-        <p>Para ir a trabajar a la oficina.</p>
+        <h1 className='ExpertaText'>Reserva tu Turno</h1>
+        <p >Selecciona una fecha y un sitio para reservar!</p>
+        <br/>
         <form onSubmit={formik.handleSubmit}
             style={{
               display: "flex",
@@ -134,9 +137,131 @@ const Reserva = () => {
                     ))}
                 </Select>
                 </FormControl>
+
+                <FormControl
+                style={{
+                    marginTop: "3%",
+                    alignSelf: "center",
+                }}
+                >
+                <InputLabel>
+                    <b>Elegí el colaborador</b>
+                </InputLabel>
+                <Select
+                    id="gerencia"
+                    name="gerencia"
+                    style={{
+                    marginBottom: "15px",
+                    minWidth: "150",
+                    }}
+                    onChange={formik.handleChange}
+                    value={formik.values.gerencia}
+                >
+                    {gerencias &&
+                    gerencias.map((gerencia) => (
+                        <MenuItem
+                        style={{ fontSize: "11pt", fontFamily: "Roboto" }}
+                        >
+                            
+                        </MenuItem>
+                    ))}
+                </Select>
+                </FormControl>
+
+                <FormControl
+                style={{
+                    marginTop: "3%",
+                    alignSelf: "center",
+                }}
+                >
+                <InputLabel>
+                    <b>Elegí el sitio</b>
+                </InputLabel>
+                <Select
+                    id="gerencia"
+                    name="gerencia"
+                    style={{
+                    marginBottom: "15px",
+                    minWidth: "150",
+                    }}
+                    onChange={formik.handleChange}
+                    value={formik.values.gerencia}
+                >
+                    {gerencias &&
+                    gerencias.map((gerencia) => (
+                        <MenuItem
+                        style={{ fontSize: "11pt", fontFamily: "Roboto" }}
+                        >
+                            
+                        </MenuItem>
+                    ))}
+                </Select>
+                </FormControl>
+
+                <FormControl
+                style={{
+                    marginTop: "3%",
+                    alignSelf: "center",
+                }}
+                >
+                <InputLabel>
+                    <b>Elegí el piso</b>
+                </InputLabel>
+                <Select
+                    id="gerencia"
+                    name="gerencia"
+                    style={{
+                    marginBottom: "15px",
+                    minWidth: "150",
+                    }}
+                    onChange={formik.handleChange}
+                    value={formik.values.gerencia}
+                >
+                    {gerencias &&
+                    gerencias.map((gerencia) => (
+                        <MenuItem
+                        style={{ fontSize: "11pt", fontFamily: "Roboto" }}
+                        >
+                            
+                        </MenuItem>
+                    ))}
+                </Select>
+                </FormControl>
+
+                <FormControl
+                style={{
+                    marginTop: "3%",
+                    alignSelf: "center",
+                }}
+                >
+                <InputLabel>
+                    <b>Elegí el horario</b>
+                </InputLabel>
+                <Select
+                    id="gerencia"
+                    name="gerencia"
+                    style={{
+                    marginBottom: "15px",
+                    minWidth: "150",
+                    }}
+                    onChange={formik.handleChange}
+                    value={formik.values.gerencia}
+                >
+                    {gerencias &&
+                    gerencias.map((gerencia) => (
+                        <MenuItem
+                        style={{ fontSize: "11pt", fontFamily: "Roboto" }}
+                        >
+                            
+                        </MenuItem>
+                    ))}
+                </Select>
+                </FormControl>
+
             </form>
         </Container>
-    </FormControl>
+      </div>
+    </div>
     );
 }
 export default Reserva;

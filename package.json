@@ -18,6 +18,7 @@
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",
+    "react-window": "^1.8.6",
     "stringify-object": "^3.3.0",
     "web-vitals": "^0.2.4",
     "yup": "^0.29.3"

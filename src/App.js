@@ -5,8 +5,8 @@ import Home from './components/Home';
 import Login from './components/Login';
 import Administracion from './components/Administracion'
 import Reporte from "./components/Reporte";
-import Sidebar from './components/Sidebar';
 import Reserva from './components/Reserva';
+import MisReservas from './components/MisReservas';
 import Diagnostico from './components/Diagnostico';
 
 import './utils/App.css';
@@ -19,6 +19,7 @@ class App extends Component {
           <Route exact path="/" component={Login} />
           <Route exact path="/Home" component={Home}/>
           <Route exact path="/Reserva" component={Reserva} /> 
+          <Route exact path="/MisReservas" component={MisReservas} /> 
           <Route exact path="/Diagnostico" component={Diagnostico} />
           <Route exact path="/Administracion" component={Administracion} /> 
           <Route exact path="/Reporte" component={Reporte} /> 

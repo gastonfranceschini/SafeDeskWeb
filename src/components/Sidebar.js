@@ -20,7 +20,7 @@ function Sidebar() {
 
     ReportesAPI.getConfig(nombreConfig)
     .then(response => {
-      alert.show("Test "+nombreConfig+ ":" +  response.data);
+      //alert.show("Test "+nombreConfig+ ":" +  response.data);
     })          
     .catch(function(error) {
       if (error.response == undefined)
@@ -36,8 +36,7 @@ function Sidebar() {
 
     return (
         <div className='Sidebar'>
-            <header style={{ marginLeft: "40%", color : 'white',fontWeight: 'bold' }}>
-              <br/>
+            <header className='userName'>
                 {getUser().Nombre}
             </header>
             <ul className='SidebarList'>
