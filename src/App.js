@@ -6,8 +6,6 @@ import Reporte from "./components/Reporte";
 import MisReservas from "./components/MisReservas";
 import Sidebar from './components/Sidebar';
 
-
-
 import './utils/App.css';
 
 import Home from './components/Home';

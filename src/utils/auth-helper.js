@@ -1,11 +1,15 @@
 import Axios from "axios";
-//import SyncStorage from 'sync-storage';
 import * as gVar from "../utils/properties";
 import React from 'react';
-//import { CommonActions } from '@react-navigation/native';
 
 const TOKEN_KEY = "SxnL";
 const USER_KEY = "User";
+
+//Logout
+export function logoutUser() {
+  localStorage.removeItem(USER_KEY);
+  localStorage.removeItem(TOKEN_KEY);
+}
 
 export function setToken(token) {
   localStorage.setItem(TOKEN_KEY, token)
@@ -36,7 +40,7 @@ export async function getCurrentUser() {
   }
 }
 
-export function initAxiosInterceptors() {
+/*export function initAxiosInterceptors() {
   Axios.interceptors.request.use(config => {
     const token = getToken();
     if (token) {
@@ -57,4 +61,4 @@ export function initAxiosInterceptors() {
       }
     }
   );
-}
+}*/
