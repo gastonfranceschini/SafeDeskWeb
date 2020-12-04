@@ -50,7 +50,6 @@ const Login = () => {
     .then(response => {
       setToken(response.data.token);
       setUser(response.data);
-      //initAxiosInterceptors();
       setCargando(false);
       alert.show("Bienvenido " +  getUser().Nombre);
       setLogged(true);

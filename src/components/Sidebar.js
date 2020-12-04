@@ -7,7 +7,6 @@ import { logoutUser,getToken } from "../utils/auth-helper";
 
 function Sidebar() {
 
-
   const alert = useAlert();
   const CONFIG_TURNOS = "TurnosActivo";
   const CONFIG_DIAGNOSTICOS = "DiagnosticosActivo";
@@ -40,7 +39,7 @@ function Sidebar() {
             <ul className='SidebarList'>
                 {SidebarData.map((val, key)=> {
                     return (
-                        <li 
+                        <li style={{ marginLeft: "5%"}}
                             key={key} 
                             className='row'
                             id={window.location.pathname == val.link ? "active" : ""}
