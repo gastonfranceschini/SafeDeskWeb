@@ -9,7 +9,6 @@ import MisReservas from "./components/MisReservas";
 
 import './utils/App.css';
 import Home from './components/Home';
-import Login from './components/Login';
 
 class App extends Component {
   render() {
