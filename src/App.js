@@ -4,6 +4,7 @@ import Login from './components/Login';
 import Administracion from './components/Administracion'
 import Reporte from "./components/Reporte";
 import MisReservas from "./components/MisReservas";
+import Sidebar from './components/Sidebar';
 
 
 
@@ -16,7 +17,8 @@ class App extends Component {
     return ( 
       <Router>
       <Switch>
-        <Route exact path="/" component={Login} />
+        <Route exact path="/Login" component={Login} />
+        <Route exact path="/Sidebar" component={Sidebar} />
         <Route exact path="/Home" exact component={Home}/>
         <Route exact path = "/Administracion" component={Administracion} /> 
         <Route exact path = "/Reporte" component={Reporte} /> 
