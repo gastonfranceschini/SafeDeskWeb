@@ -4,6 +4,7 @@ import {SidebarData} from './SidebarData';
 import * as ReportesAPI from "../apis/ReportesAPI";
 import { useAlert } from 'react-alert';
 import { logoutUser,getToken,getUser } from "../utils/auth-helper";
+import { Divider } from '@material-ui/core';
 
 function Sidebar() {
 
@@ -36,9 +37,10 @@ function Sidebar() {
 
     return (
         <div className='Sidebar'>
-            <header className='userName'>
-                {getUser().Nombre}
+            <header className='userName'  style={{ textAlign: "center"}}>
+                <b>{getUser().Nombre} </b> - { getUser().Email}
             </header>
+            <Divider />
             <ul className='SidebarList'>
                 {SidebarData.map((val, key)=> {
                     return (
