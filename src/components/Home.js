@@ -1,8 +1,12 @@
 import React from 'react';
+import Sidebar from './Sidebar';
+import '../utils/App.css';
 
 const Home = (props) => {
   return ( 
-    <h1>HOME</h1>
+    <div className="App">
+      <Sidebar />
+    </div>
   );
 }
  
