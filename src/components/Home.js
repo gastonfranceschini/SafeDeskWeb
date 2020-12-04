@@ -11,7 +11,7 @@ const Home = (props) => {
       <Sidebar />
     </div>
   );
-  }
+}
 
  
 export default Home;

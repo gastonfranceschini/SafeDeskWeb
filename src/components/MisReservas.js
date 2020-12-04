@@ -1,26 +1,22 @@
 import React from 'react';
-import Header from "../shared/Header"
 import Container from "@material-ui/core/Container"
 
+import Header from "../shared/Header"
+import Sidebar from "./Sidebar"
 
 const MisReservas = (prop) => {
     return (  
     
-        <div>
+      <div>
         <Header/>
-             <div>
+        <Sidebar/>
+        <div>
           <Container maxWidth="sm">
-            <h1>reservasdsada</h1>
-            <h1>Deshasdasd</h1>
-            </Container>
-            </div>
+            <h1>Mis Reservas</h1>
+          </Container>
         </div>
-
-
-    
-
+      </div>
     )
 }
-
 
 export default MisReservas;

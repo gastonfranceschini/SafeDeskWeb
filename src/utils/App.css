@@ -10,8 +10,10 @@ body {
 
 .Sidebar {
   height: 100%;
-  width: 250px;
+  width: 24vw;
   background-color: #2F4050;
+  position: absolute;
+  min-width: 200px;
 }
 
 .SidebarList {
@@ -41,6 +43,13 @@ body {
   background-color: #293846;
 
 }
+
+.userName{
+  margin: 25px 25px; 
+  color: #fff;
+  font-weight: bold;
+}
+
 .row #icon {
   flex: 30%;
   display: grid;
@@ -50,4 +59,18 @@ body {
 .row #title {
   flex: 70%;
   
+}
+
+.MuiContainer-root {
+  display: flex !important;
+  flex-direction: column;
+  align-items: center;
+}
+
+.MuiInputBase-input {
+  width: 60vw !important;
+}
+
+#gerencia {
+  width: 240px !important;
 }

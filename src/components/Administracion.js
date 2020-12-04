@@ -5,33 +5,33 @@ import { Container, Checkbox, FormControl, FormGroup, FormControlLabel, FormHelp
 import { useFormik } from "formik";
 
 import Header from '../shared/Header';
+import Sidebar from './Sidebar';
 
 
 
 const Administracion = (props) => {
 
-    const useStyles = makeStyles(theme => ({
-      root: {
-        display: 'flex',
-      },
-      formControl: {
-        margin: theme.spacing(3),
-      },
-    }));
+  const useStyles = makeStyles(theme => ({
+    root: {
+      display: 'flex',
+    },
+    formControl: {
+      margin: theme.spacing(3),
+    },
+  }));
 
-    const classes = useStyles();
-    const [check, setCheck] = useState({
-      reservaTurno: true,
-      autoDiagnostico: true,
-   
-    });
+  const classes = useStyles();
+  const [check, setCheck] = useState({
+    reservaTurno: true,
+    autoDiagnostico: true,
+  });
 
-    const handleChange = name => event => {
-        setCheck({ ...check, [name]: event.target.checked });
-      };
+  const handleChange = name => event => {
+      setCheck({ ...check, [name]: event.target.checked });
+    };
 
-const {reservaTurno, autoDiagnostico } = check;
-const error = [reservaTurno, autoDiagnostico].filter(v => v).length !== 2;
+  const {reservaTurno, autoDiagnostico } = check;
+  const error = [reservaTurno, autoDiagnostico].filter(v => v).length !== 2;
 
   const formik = useFormik({
     // onSubmit: (values) => {
@@ -41,6 +41,7 @@ const error = [reservaTurno, autoDiagnostico].filter(v => v).length !== 2;
   return ( 
     <div>
       <Header />
+      <Sidebar />
       <div>
         <Container maxWidth="sm">
           <h1>Administracion:</h1>

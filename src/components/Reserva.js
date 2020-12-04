@@ -13,7 +13,9 @@ import {
     Button,
     Zoom,
   } from "@material-ui/core";
+
 import Header from '../shared/Header';
+import Sidebar from './Sidebar';
 
 const isWeekday = (date) => {
     const day = getDay(date);
@@ -66,10 +68,10 @@ const Reserva = () => {
       }
 
     return (
-    <FormControl>
-        <div>
-            <Header />
-        </div>
+    <div>
+      <Header />
+      <Sidebar />
+      <div>
         <Container maxWidth="sm">
         <h1>Reserva tu Turno</h1>
         <p>Para ir a trabajar a la oficina.</p>
@@ -136,7 +138,8 @@ const Reserva = () => {
                 </FormControl>
             </form>
         </Container>
-    </FormControl>
+      </div>
+    </div>
     );
 }
 export default Reserva;
