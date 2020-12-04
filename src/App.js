@@ -10,7 +10,6 @@ import Sidebar from './components/Sidebar';
 
 import './utils/App.css';
 import Home from './components/Home';
-import Login from './components/Login';
 
 class App extends Component {
   render() {
