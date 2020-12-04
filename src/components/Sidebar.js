@@ -7,7 +7,6 @@ import { logoutUser,getToken } from "../utils/auth-helper";
 
 function Sidebar() {
 
-
   const alert = useAlert();
   const CONFIG_TURNOS = "TurnosActivo";
   const CONFIG_DIAGNOSTICOS = "DiagnosticosActivo";

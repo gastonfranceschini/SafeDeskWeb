@@ -6,6 +6,7 @@ import { useFormik } from "formik";
 
 import * as Api from '../apis/DiagnosticosAPI';
 import Header from '../shared/Header';
+import Sidebar from './Sidebar';
 
 const Diagnostico = (props) => {
 
@@ -61,6 +62,7 @@ const Diagnostico = (props) => {
   return ( 
     <div>
       <Header />
+      <Sidebar />
       <div>
         <Container maxWidth="sm">
           <h1>Diagnóstico:</h1>
