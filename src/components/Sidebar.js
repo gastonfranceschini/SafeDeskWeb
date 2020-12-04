@@ -36,7 +36,8 @@ function Sidebar() {
 
     return (
         <div className='Sidebar'>
-            <header style={{ marginLeft: "40%", color : 'white'}}>
+            <header style={{ marginLeft: "40%", color : 'white',fontWeight: 'bold' }}>
+              <br/>
                 {getUser().Nombre}
             </header>
             <ul className='SidebarList'>
