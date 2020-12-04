@@ -17,12 +17,10 @@ const Administracion = (prop) => {
         </div>
 
 
-        
-
+    
 
     )
 }
-
 
 
 export default Administracion;
