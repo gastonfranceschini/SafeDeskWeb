@@ -1,9 +1,20 @@
 import { http } from "./api";
 
-const endpointBase = 'api/auth/';
+const endpointBase = 'api/usuarios/';
 
-export const loginUser = async (dni,password) => {
-    const url = endpointBase + 'signin'
-    var data =  {"dni": dni , "password": password }
-    return await http.post(url, data);
+
+export const getUsuariosDependientes = async (values) => {
+    const url = endpointBase + 'dependientes'
+    return await http.get(url);
+}
+
+export const getGerencias = async (values) => {
+    const url = endpointBase + 'gerencias'
+    return await http.get(url);
+}
+
+export const changePassword = async (dni,passOld,passNew) => {
+    const url = endpointBase + 'password'
+    var data =  {"dni": dni , "oldPassword": passOld  , "newPassword": passNew}
+    return await http.put(url, data);
 }
