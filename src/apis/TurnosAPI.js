@@ -38,9 +38,9 @@ export const getTurnosHistoricos = async (values) => {
     return await http.get(url);
 }
 
-export const saveTurno = async (idUsuario,FechaTurno,Piso,Edificio,Horario) => {
+export const saveTurno = async (idUsuario, FechaTurno, IdPiso, IdEdificio, idHorarioEntrada) => {
     const url = endpointBase
-    var data =  {"idUsuario": idUsuario , "fechaTurno": fechaTurno  , "idHorarioEntrada": idHorarioEntrada,
+    var data =  {"idUsuario": idUsuario , "fechaTurno": FechaTurno  , "idHorarioEntrada": idHorarioEntrada,
                 "IdPiso" : IdPiso , "IdEdificio" : IdEdificio}
 
     return await http.post(url,data);
