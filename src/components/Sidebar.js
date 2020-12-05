@@ -12,16 +12,33 @@ function Sidebar() {
   const CONFIG_TURNOS = "TurnosActivo";
   const CONFIG_DIAGNOSTICOS = "DiagnosticosActivo";
 
+  const [turnosActivo, setTurnosActivo] = useState(1)
+  const [diagnosticosActivo, setDiagnosticosActivo] = useState(1)
+
   useEffect(() => {
       getConfig(CONFIG_TURNOS);
       getConfig(CONFIG_DIAGNOSTICOS);
+      
   }, []);
+  
+  const setConfig = (nombreConfig,valorConfig) => {
+
+    switch (nombreConfig) {
+      case CONFIG_TURNOS:
+        setTurnosActivo(valorConfig);
+        break;
+      case CONFIG_DIAGNOSTICOS:
+        setDiagnosticosActivo(valorConfig);
+        break;
+    }
+  }
+
 
   const getConfig = (nombreConfig) => {
 
     ReportesAPI.getConfig(nombreConfig)
     .then(response => {
-      //alert.show("Test "+nombreConfig+ ":" +  response.data);
+      setConfig(nombreConfig,response.data.valor)
     })          
     .catch(function(error) {
       if (error.response == undefined)
@@ -42,7 +59,7 @@ function Sidebar() {
             </header>
             <Divider />
             <ul className='SidebarList'>
-                {SidebarData.map((val, key)=> {
+                {SidebarData(diagnosticosActivo,turnosActivo).map((val, key)=> {
                     return (
                         <li style={{ marginLeft: "5%"}}
                             key={key} 
