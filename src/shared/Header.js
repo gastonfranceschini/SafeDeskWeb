@@ -9,16 +9,26 @@ const Header = () => {
             style={{ marginRight: '20px',  marginBottom: "1%", width:95 }}
             src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Grupo-Werthein-01.png"
             alt="W logo"
-          />*/
-
-    return(
-        <div className="loginheader">
-        <Paper elevation={3}>
-          <img
+          />
+          
+                    <img
             style={{ marginLeft: "5%", marginTop: "2%", marginBottom: "2%" }}
             src="https://www.experta.com.ar/wp-content/themes/bauhaus-child/icon/logo-experta-seguros.svg"
             alt="Experta logo"
           />
+
+          */
+
+    return(
+        <div className="loginheader">
+        <Paper elevation={3}>
+
+        <img
+            style={{ marginLeft: "3%",marginTop: "1%",  marginBottom: "1%", width:95 }}
+            src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Grupo-Werthein-01.png"
+            alt="W logo"
+          />
+
         </Paper>
       </div>
     );
