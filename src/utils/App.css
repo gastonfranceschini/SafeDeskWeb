@@ -90,11 +90,11 @@ body {
   flex-grow: 0 !important;
 }
 
-#root > div > div:nth-child(3) > div > form > div > div:nth-child(2) > div > div {
+#reserva-form > div > div:nth-child(2) > div > div {
   width: 526px !important;
   margin-left: -24px !important;
 }
 
-#root > div > div:nth-child(3) > div > form > div > div:nth-child(2) > div > label {
+#reserva-form > div > div:nth-child(2) > div > label {
   left: -24px;
 }

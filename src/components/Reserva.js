@@ -111,6 +111,7 @@ const Reserva = () => {
         <p >Selecciona una fecha y un sitio para reservar!</p>
         <br/>
         <form onSubmit={formik.handleSubmit}
+            id="reserva-form"
             style={{
               display: "flex",
               justifyContent: "center",
