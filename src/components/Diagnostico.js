@@ -1,9 +1,8 @@
 import React, { Component, useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
-import { Container, Checkbox, FormControl, FormGroup, FormControlLabel, FormHelperText } from "@material-ui/core";
+import { Container, Checkbox, FormControl, FormGroup, FormControlLabel } from "@material-ui/core";
 import { useFormik } from "formik";
-
 import * as Api from '../apis/DiagnosticosAPI';
 import Header from '../shared/Header';
 import Sidebar from './Sidebar';
@@ -76,66 +75,66 @@ const Diagnostico = (props) => {
               }}
             >
               <FormControl component="fieldset" className={classes.formControl}>
-                <FormGroup>
-                  <FormControlLabel
-                    control={<Checkbox checked={temperatura} onChange={handleChange('temperatura')} value="temperatura" />}
-                    label="Tengo temperatura mayor a 37°?"
-                  />
-                </FormGroup>
-                <FormGroup>
-                  <FormControlLabel
-                    control={<Checkbox checked={gusto} onChange={handleChange('gusto')} value="gusto" />}
-                    label="Tengo pérdida del gusto?"
-                  />
-                </FormGroup>
-                <FormGroup>
-                  <FormControlLabel
-                    control={<Checkbox checked={contacto} onChange={handleChange('contacto')} value="contacto" />}
-                    label="Tuve contacto cercano con COVID?"
-                  />
-                </FormGroup>
-                <FormGroup>
-                  <FormControlLabel
-                    control={<Checkbox checked={embarazada} onChange={handleChange('embarazada')} value="embarazada" />}
-                    label="Estoy embarazada?"
-                  />
-                </FormGroup>
-                <FormGroup>
-                  <FormControlLabel
-                    control={<Checkbox checked={cancer} onChange={handleChange('cancer')} value="cancer" />}
-                    label="Tengo/tuve cáncer?"
-                  />
-                </FormGroup>
-                <FormGroup>
-                  <FormControlLabel
-                    control={<Checkbox checked={diabetes} onChange={handleChange('diabetes')} value="diabetes" />}
-                    label="Tengo diabetes?"
-                  />
-                </FormGroup>
-                <FormGroup>
-                  <FormControlLabel
-                    control={<Checkbox checked={hepatica} onChange={handleChange('hepatica')} value="hepatica" />}
-                    label="Tengo alguna enfermedad hepática?"
-                  />
-                </FormGroup>
-                <FormGroup>
-                  <FormControlLabel
-                    control={<Checkbox checked={olfato} onChange={handleChange('olfato')} value="olfato" />}
-                    label="Tengo pérdida del olfato?"
-                  />
-                </FormGroup>
-                <FormGroup>
-                  <FormControlLabel
-                    control={<Checkbox checked={garganta} onChange={handleChange('garganta')} value="garganta" />}
-                    label="Tengo dolor de garganta?"
-                  />
-                </FormGroup>
-                <FormGroup>
-                  <FormControlLabel
-                    control={<Checkbox checked={respiratoria} onChange={handleChange('respiratoria')} value="respiratoria" />}
-                    label="Tengo dificultad respiratoria?"
-                  />
-                </FormGroup>
+                    <FormGroup>
+                      <FormControlLabel
+                        control={<Checkbox checked={temperatura} onChange={handleChange('temperatura')} value="temperatura" />}
+                        label="Tengo temperatura mayor a 37°?"
+                      />
+                    </FormGroup>
+                    <FormGroup>
+                      <FormControlLabel
+                        control={<Checkbox checked={gusto} onChange={handleChange('gusto')} value="gusto" />}
+                        label="Tengo pérdida del gusto?"
+                      />
+                    </FormGroup>
+                    <FormGroup>
+                      <FormControlLabel
+                        control={<Checkbox checked={contacto} onChange={handleChange('contacto')} value="contacto" />}
+                        label="Tuve contacto cercano con COVID?"
+                      />
+                    </FormGroup>
+                    <FormGroup>
+                      <FormControlLabel
+                        control={<Checkbox checked={embarazada} onChange={handleChange('embarazada')} value="embarazada" />}
+                        label="Estoy embarazada?"
+                      />
+                    </FormGroup>
+                    <FormGroup>
+                      <FormControlLabel
+                        control={<Checkbox checked={cancer} onChange={handleChange('cancer')} value="cancer" />}
+                        label="Tengo/tuve cáncer?"
+                      />
+                    </FormGroup>
+                    <FormGroup>
+                      <FormControlLabel
+                        control={<Checkbox checked={diabetes} onChange={handleChange('diabetes')} value="diabetes" />}
+                        label="Tengo diabetes?"
+                      />
+                    </FormGroup>
+                    <FormGroup>
+                      <FormControlLabel
+                        control={<Checkbox checked={hepatica} onChange={handleChange('hepatica')} value="hepatica" />}
+                        label="Tengo alguna enfermedad hepática?"
+                      />
+                    </FormGroup>
+                    <FormGroup>
+                      <FormControlLabel
+                        control={<Checkbox checked={olfato} onChange={handleChange('olfato')} value="olfato" />}
+                        label="Tengo pérdida del olfato?"
+                      />
+                    </FormGroup>
+                    <FormGroup>
+                      <FormControlLabel
+                        control={<Checkbox checked={garganta} onChange={handleChange('garganta')} value="garganta" />}
+                        label="Tengo dolor de garganta?"
+                      />
+                    </FormGroup>
+                    <FormGroup>
+                      <FormControlLabel
+                        control={<Checkbox checked={respiratoria} onChange={handleChange('respiratoria')} value="respiratoria" />}
+                        label="Tengo dificultad respiratoria?"
+                      />
+                    </FormGroup>
               </FormControl>
               <Button
                 style={{ alignSelf: "center" ,textTransform: "none"}}

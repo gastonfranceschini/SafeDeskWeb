@@ -18,6 +18,10 @@ const Login = () => {
 
   const alert = useAlert();
 
+  
+  const [cargando, setCargando] = useState(false)
+  const [logged, setLogged] = useState(false)
+
   useEffect(() => {
     if (getToken()) 
     {
@@ -41,9 +45,6 @@ const Login = () => {
     .required("requerido"),
     password: Yup.string().required("requerido"),
   });
-
-  const [cargando, setCargando] = useState(false)
-  const [logged, setLogged] = useState(false)
 
   const LogIn = (dni,password) => {
     setCargando(true);
