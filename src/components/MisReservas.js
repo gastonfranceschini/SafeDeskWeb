@@ -24,7 +24,7 @@ const MisReservas = (prop) => {
     .then(response => {
       var result = [];
       for(var i in response.data)
-          result.push("Fecha: " + response.data[i].FechaTurno + " Sitio: " + response.data[i].Edificio + " " + response.data[i].Piso + " Horario: " + response.data[i].Horario);
+          result.push("Fecha: " + response.data[i].FechaTurno.substr(0,10) + " Sitio: " + response.data[i].Edificio + " " + response.data[i].Piso + ", Horario: " + response.data[i].Horario);
 
           setTurnosHistoricos(result);
     })          
@@ -41,7 +41,7 @@ const MisReservas = (prop) => {
     .then(response => {
       var result = [];
       for(var i in response.data)
-          result.push("Fecha: " + response.data[i].FechaTurno + " Sitio: " + response.data[i].Edificio + " " + response.data[i].Piso + " Horario: " + response.data[i].Horario);
+          result.push("Fecha: " + response.data[i].FechaTurno.substr(0,10) + " Sitio: " + response.data[i].Edificio + " " + response.data[i].Piso + ", Horario: " + response.data[i].Horario);
 
       setTurnosActivos(result);
     })          
@@ -67,17 +67,18 @@ const MisReservas = (prop) => {
    
   
   const ListaTurnosActivos = () => (
-    <List
+    <List style={{fontWeight: 'bold',textAlign: "center",borderColor: 'black', 
+    borderWidth: 1 }}
       height={200}
       width={550}
       itemSize={35}
-      itemCount={turnosActivos.length}>
+      itemCount={turnosActivos.length}> 
       {RowA}
     </List>
   );
 
   const ListaTurnosHistoricos = () => (
-    <List
+    <List style={{fontWeight: 'bold',textAlign: "center"}}
       height={200}
       width={550}
       itemSize={35}
@@ -86,8 +87,6 @@ const MisReservas = (prop) => {
     </List>
   );
   
-  
-
     return (  
       <div>
         <Header/>
@@ -95,9 +94,11 @@ const MisReservas = (prop) => {
         <div>
           <Container maxWidth="sm">
             <h1 className='ExpertaText'>Mis Reservas</h1>
-            <p>Reservas Proximas</p>
-            <ListaTurnosActivos/>
-            <p>Reservas Historicas</p>
+            <p className='HomeDescr'>Reservas Proximas</p>
+            <ListaTurnosActivos />
+            <br/>
+            <br/>
+            <p className='HomeDescr'>Reservas Historicas</p>
             <ListaTurnosHistoricos/>
           </Container>
         </div>

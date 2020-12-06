@@ -47,6 +47,7 @@ const Reserva = () => {
     }));
     const classes = useStyles();
 
+
     const formik = useFormik({
         initialValues: {
           fecha: "",
@@ -163,6 +164,7 @@ const Reserva = () => {
                         }}
                         onChange={formik.handleChange}
                         value={formik.values.edificio}
+                        selected={formik.values.edificio}
                     >
                         {edificios &&
                         edificios.map((edificio) => (

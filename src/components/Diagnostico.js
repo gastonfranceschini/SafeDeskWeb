@@ -6,9 +6,13 @@ import { useFormik } from "formik";
 import * as Api from '../apis/DiagnosticosAPI';
 import Header from '../shared/Header';
 import Sidebar from './Sidebar';
+import { useAlert } from 'react-alert';
+
+
 
 const Diagnostico = (props) => {
 
+  const alert = useAlert();
   const useStyles = makeStyles(theme => ({
     root: {
       display: 'flex',
@@ -39,6 +43,21 @@ const Diagnostico = (props) => {
   const { temperatura, gusto, contacto, embarazada, cancer, diabetes, hepatica, olfato, garganta, respiratoria } = check;
   const error = [temperatura, gusto, contacto, embarazada, cancer, diabetes, hepatica, olfato, garganta, respiratoria].filter(v => v).length !== 2;
 
+  const guardarDiagnostico = (temperatura, gusto, contacto, embarazada, cancer, diabetes, hepatica, olfato, garganta, respiratoria) => {
+
+    Api.saveDiagnostico(temperatura, gusto, contacto, embarazada, cancer, diabetes, hepatica, olfato, garganta, respiratoria)
+    .then(response => {
+      alert.show("Guardado Correctamente!");
+      //go back
+    })          
+    .catch(function(error) {
+      if (error.response == undefined)
+        alert.show("" + error);
+      else
+        alert.show("" + error.response.data.error);
+    });
+  };
+
   const formik = useFormik({
     initialValues: {
       temperatura: "",
@@ -53,8 +72,8 @@ const Diagnostico = (props) => {
       respiratoria: ""
     },
     onSubmit: (values) => {
-      const { emperatura, gusto, contacto, embarazada, cancer, diabetes, hepatica, olfato, garganta, respiratoria } = values;
-      Api.saveDiagnostico(temperatura, gusto, contacto, embarazada, cancer, diabetes, hepatica, olfato, garganta, respiratoria)
+      const { temperatura, gusto, contacto, embarazada, cancer, diabetes, hepatica, olfato, garganta, respiratoria } = values;
+      guardarDiagnostico(temperatura, gusto, contacto, embarazada, cancer, diabetes, hepatica, olfato, garganta, respiratoria);
     },
   });
 
@@ -63,7 +82,7 @@ const Diagnostico = (props) => {
       <Header />
       <Sidebar />
       <div>
-        <Container maxWidth="sm">
+        <Container className='HomeDescr' maxWidth="sm">
           <h1 className='ExpertaText'>Diagnóstico:</h1>
           <div className={classes.root}>
             <form
