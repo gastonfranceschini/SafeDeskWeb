@@ -3,7 +3,7 @@ import Container from "@material-ui/core/Container"
 import { ListItem,ListItemText } from '@material-ui/core';
 import * as TurnosAPI from "../apis/TurnosAPI";
 import Header from "../shared/Header"
-import Sidebar from "./Sidebar"
+import Sidebar from "./Sidebar2"
 import { FixedSizeList as List } from 'react-window';
 import { useAlert } from 'react-alert';
 

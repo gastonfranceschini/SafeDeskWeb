@@ -22,7 +22,7 @@ class App extends Component {
           <Route exact path="/MisReservas" component={MisReservas} /> 
           <Route exact path="/Diagnostico" component={Diagnostico} />
           <Route exact path="/Administracion" component={Administracion} /> 
-          <Route exact path="/Reporte" component={Reporte} /> 
+          <Route exact path="/Reporte" component={Reporte} />
         </Switch>
       </Router>
     );
