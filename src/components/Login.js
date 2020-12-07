@@ -8,7 +8,7 @@ import * as Yup from "yup";
 import Button from "@material-ui/core/Button";
 import { withRouter, Link, Redirect } from "react-router-dom";
 import axios from "axios";
-import { setToken, initAxiosInterceptors, setUser, getUser, getToken } from "../utils/auth-helper";
+import { setToken, setUser, getUser, getToken } from "../utils/auth-helper";
 import * as gVar from "../utils/properties";
 import Home from "./Home";
 import * as Auth from "../apis/AuthAPI";

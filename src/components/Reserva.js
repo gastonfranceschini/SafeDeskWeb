@@ -7,6 +7,7 @@ import { useFormik } from "formik";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import { useAlert } from 'react-alert';
+
 import {
     MenuItem,
     Select,
@@ -19,6 +20,7 @@ import {
 import Header from '../shared/Header';
 import Sidebar from './Sidebar';
 import { getEdificios, getPisos, getHoras, saveTurno } from '../apis/TurnosAPI';
+import { getUsuariosDependientes } from '../apis/UsuariosAPI';
 
 const isWeekday = (date) => {
     const day = getDay(date);
@@ -35,7 +37,7 @@ const Reserva = () => {
     const [fechaSel, setFechaSel] = useState();
     const alert = useAlert();
 
-    const useStyles = makeStyles((theme) => ({
+    /*const useStyles = makeStyles((theme) => ({
       formControl: {
         width: "100%",
       },
@@ -48,7 +50,7 @@ const Reserva = () => {
         justifyContent: 'center'
       }
     }));
-    const classes = useStyles();
+    const classes = useStyles();*/
 
 
     const formik = useFormik({
@@ -61,7 +63,7 @@ const Reserva = () => {
         },
         onSubmit: (values) => {
           const { fecha, usuario, edificio, piso, hora } = values;
-          const fechaAux = formatISO(new Date(`${fecha}`), {
+          /*const fechaAux = formatISO(new Date(`${fecha}`), {
             representation: "date",
           });
           const obj = {
@@ -70,7 +72,8 @@ const Reserva = () => {
             edificio: edificio,
             piso: piso,
             hora: hora,
-          };
+          };*/
+          guardarReserva(usuario, fechaSel, piso, edificio, hora);
           //dispatch(setTurnoValues(obj));
           //deshabilitar();
         },
@@ -85,14 +88,31 @@ const Reserva = () => {
         setEdificios(res.data);
       }
 
-      async function handleEdificiosChange() {
-        //formik.values.edificio esta siempre una valor atras, fix
-        const res = await getPisos(formik.values.edificio,fechaSel);
-        setPisos(res.data);
-        const res2 = await getHoras(formik.values.edificio,fechaSel);
-        setHorarios(res2.data);
-        //alert.show("EdificiosChange" + fechaSel );
+      async function handleEdificiosChange(idEdificio) {
+        if (idEdificio)
+        {
+          const res = await getPisos(idEdificio,fechaSel);
+          setPisos(res.data);
+          const res2 = await getHoras(idEdificio,fechaSel);
+          setHorarios(res2.data);
+        }
       }
+
+
+      const guardarReserva = (idUsuario, FechaTurno, IdPiso, IdEdificio, idHorarioEntrada) => {
+
+        saveTurno(idUsuario, FechaTurno, IdPiso, IdEdificio, idHorarioEntrada)
+            .then(response => {
+              alert.show("Reserva grabada correctamente!");
+              //setDone(true);
+            })          
+                .catch(function(error) {
+                  if (error.response == undefined)
+                    alert.show("" + error);
+                  else
+                    alert.show("" + error.response.data.error);
+                });
+    };
 
       function populateFeriados(holiday) {
         const feriadoData = [];
@@ -104,6 +124,17 @@ const Reserva = () => {
         }
         return feriadoData;
       }
+
+      async function cargarUsuarios() {
+        const res = await getUsuariosDependientes();
+        setUsuarios(res.data);
+      }
+
+      useEffect(() => {
+        cargarUsuarios();
+        const defaultEdificio = [{ eID : 0, Nombre: 'Seleccionar Fecha', Direccion: '' }]
+        setEdificios(defaultEdificio);
+      }, []);
 
       /*useEffect(() => {
         try {
@@ -127,14 +158,12 @@ const Reserva = () => {
         <p >Selecciona una fecha y un sitio para reservar!</p>
         <br/>
         <form onSubmit={formik.handleSubmit}
-            id="reserva-form"
+            //id="reserva-form"
             style={{
               display: "flex",
               justifyContent: "center",
               flexDirection: "column",
             }}>
-            <Grid container className={classes.form}>
-              <Grid item xs>
                 <FormControl>
                   <InputLabel>Elegí la fecha</InputLabel>
                     <div id="datePicker">
@@ -161,8 +190,7 @@ const Reserva = () => {
                       />
                     </div>
                   </FormControl>
-                </Grid>
-                <Grid item xs>
+
                     <FormControl
                     style={{
                         marginTop: "3%",
@@ -182,7 +210,7 @@ const Reserva = () => {
                         value={formik.values.edificio}
                         onChange={(e) => {
                           formik.handleChange(e);
-                          handleEdificiosChange(e);
+                          handleEdificiosChange(e.target.value);
                         }}
                     >
                         {edificios &&
@@ -197,9 +225,7 @@ const Reserva = () => {
                         ))}
                     </Select>
                   </FormControl>
-              </Grid>
-              <Grid container>
-                <Grid item xs>
+
                   <FormControl
                     style={{
                         marginTop: "3%",
@@ -222,15 +248,16 @@ const Reserva = () => {
                         {usuarios &&
                         usuarios.map((usuario) => (
                             <MenuItem
-                            style={{ fontSize: "11pt", fontFamily: "Roboto" }}
+                            style={{ fontSize: "11pt", fontFamily: "Armata" }}
+                            key={`usuario_${usuario.dni}`}
+                            value={usuario.dni}
                             >
-                                
+                                {usuario.nombre}
                             </MenuItem>
                         ))}
                     </Select>
                     </FormControl>
-                  </Grid>
-                  <Grid item xs>
+
                   <FormControl
                 style={{
                     marginTop: "3%",
@@ -263,13 +290,7 @@ const Reserva = () => {
                     ))}
                 </Select>
                 </FormControl>
-                  </Grid>
-                  </Grid>
-                  <Grid container>
-                  <Grid item xs>
-                    
-                  </Grid>
-                  <Grid item xs>
+
                   <FormControl
                     style={{
                       marginTop: "3%",
@@ -301,13 +322,11 @@ const Reserva = () => {
                         ))}
                     </Select>
                 </FormControl>
-                  </Grid>
-                </Grid>
+
                 <Button
                   style={{ alignSelf: "center" ,textTransform: "none"}}
                   variant="contained"
                   type= 'submit'>Confirmar</Button>
-            </Grid>
             </form>
         </Container>
       </div>
