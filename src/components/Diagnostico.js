@@ -7,7 +7,7 @@ import { Container, Checkbox, FormControl, FormGroup, FormControlLabel } from "@
 import { useFormik } from "formik";
 import * as Api from '../apis/DiagnosticosAPI';
 import Header from '../shared/Header';
-import Sidebar from './Sidebar';
+import Sidebar from './Sidebar2';
 import { useAlert } from 'react-alert';
 
 const Diagnostico = (props) => {

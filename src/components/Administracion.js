@@ -5,7 +5,7 @@ import { Container, Checkbox, FormControl, FormGroup, FormControlLabel, FormHelp
 import { useFormik } from "formik";
 
 import Header from '../shared/Header';
-import Sidebar from './Sidebar';
+import Sidebar from './Sidebar2';
 
 
 

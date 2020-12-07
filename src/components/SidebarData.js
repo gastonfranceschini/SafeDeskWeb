@@ -18,38 +18,44 @@ const SEGURIDAD = 5;
 const btnAutoDiagnostico = {
     title: "Auto Diagnostico",
     icon: <AutoIcon />,
-    link: '/Diagnostico'
+    path: '/Diagnostico',
+    cName: 'nav-text'
 };
 
 const btnReservar = {
     title: "Reservar Turno",
     icon: <ReservarIcon />,
-    link: '/Reserva'
+    path: '/Reserva',
+    cName: 'nav-text'
 };
 
 const btnMisReservas = {
     title: "Mis Reservas",
     icon: <ReservasIcon />,
-    link: '/MisReservas'
+    path: '/MisReservas',
+    cName: 'nav-text'
 };
 
 const btnReportes = {
     title: "Reportes",
     icon: <ReportesIcon />,
-    link: '/Reporte'
+    path: '/Reporte',
+    cName: 'nav-text'
 };
 
 
 const btnAdministracion = {
     title: "Administracion",
     icon: <AdminIcon />,
-    link: '/Administracion'
+    path: '/Administracion',
+    cName: 'nav-text'
 };
 
 const btnCerrarSesion =  {
     title: "Cerrar Sesion",
     icon: <LogoutIcon />,
-    link: '/'
+    path: '/',
+    cName: 'nav-text'
 };
 
 

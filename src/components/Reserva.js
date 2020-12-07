@@ -18,7 +18,7 @@ import {
   } from "@material-ui/core";
 
 import Header from '../shared/Header';
-import Sidebar from './Sidebar';
+import Sidebar from './Sidebar2';
 import { getEdificios, getPisos, getHoras, saveTurno } from '../apis/TurnosAPI';
 import { getUsuariosDependientes } from '../apis/UsuariosAPI';
 
