@@ -6,6 +6,7 @@ import { setMinutes, getDay, addDays, formatISO } from "date-fns";
 import { useFormik } from "formik";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
+import { useAlert } from 'react-alert';
 import {
     MenuItem,
     Select,
@@ -27,10 +28,12 @@ const isWeekday = (date) => {
 //en este metodo se envia la fecha a la base para recuperar el resto de los datos
 const Reserva = () => {
     const [feriados, setFeriados] = useState([]);
-    const [gerencias, setGerencias] = useState([]);
+    const [usuarios, setUsuarios] = useState([]);
     const [edificios, setEdificios] = useState([]);
     const [pisos, setPisos] = useState([]);
-    const [horas, setHoras] = useState([]);
+    const [horarios, setHorarios] = useState([]);
+    const [fechaSel, setFechaSel] = useState();
+    const alert = useAlert();
 
     const useStyles = makeStyles((theme) => ({
       formControl: {
@@ -51,19 +54,19 @@ const Reserva = () => {
     const formik = useFormik({
         initialValues: {
           fecha: "",
-          gerencia: "",
+          usuario: "",
           edificio: "",
           piso: "",
           hora: "",
         },
         onSubmit: (values) => {
-          const { fecha, gerencia, edificio, piso, hora } = values;
+          const { fecha, usuario, edificio, piso, hora } = values;
           const fechaAux = formatISO(new Date(`${fecha}`), {
             representation: "date",
           });
           const obj = {
             fecha: fecha,
-            gerencia: gerencia,
+            usuario: usuario,
             edificio: edificio,
             piso: piso,
             hora: hora,
@@ -74,8 +77,21 @@ const Reserva = () => {
       });
 
       async function handleDateChange(date) {
-        const res = await getEdificios(date);
+        const fechaAux = formatISO(new Date(`${date}`), {
+          representation: "date",
+        });
+        setFechaSel(fechaAux);
+        const res = await getEdificios(fechaAux);
         setEdificios(res.data);
+      }
+
+      async function handleEdificiosChange() {
+        //formik.values.edificio esta siempre una valor atras, fix
+        const res = await getPisos(formik.values.edificio,fechaSel);
+        setPisos(res.data);
+        const res2 = await getHoras(formik.values.edificio,fechaSel);
+        setHorarios(res2.data);
+        //alert.show("EdificiosChange" + fechaSel );
       }
 
       function populateFeriados(holiday) {
@@ -111,6 +127,7 @@ const Reserva = () => {
         <p >Selecciona una fecha y un sitio para reservar!</p>
         <br/>
         <form onSubmit={formik.handleSubmit}
+            id="reserva-form"
             style={{
               display: "flex",
               justifyContent: "center",
@@ -162,16 +179,18 @@ const Reserva = () => {
                         marginBottom: "15px",
                         minWidth: "50",
                         }}
-                        onChange={formik.handleChange}
                         value={formik.values.edificio}
-                        selected={formik.values.edificio}
+                        onChange={(e) => {
+                          formik.handleChange(e);
+                          handleEdificiosChange(e);
+                        }}
                     >
                         {edificios &&
                         edificios.map((edificio) => (
                             <MenuItem
                             style={{ fontSize: "11pt", fontFamily: "Armata" }}
-                            key={`edificio_${edificio.id}`}
-                            value={edificio.id}
+                            key={`edificio_${edificio.eID}`}
+                            value={edificio.eID}
                             >
                                 {edificio.Nombre} - {edificio.Direccion}
                             </MenuItem>
@@ -188,20 +207,20 @@ const Reserva = () => {
                     }}
                     >
                     <InputLabel>
-                        <b>Elegí la gerencia</b>
+                        <b>Elegí el colaborador</b>
                     </InputLabel>
                     <Select
-                        id="gerencia"
-                        name="gerencia"
+                        id="usuario"
+                        name="usuario"
                         style={{
                         marginBottom: "15px",
                         minWidth: "150",
                         }}
                         onChange={formik.handleChange}
-                        value={formik.values.gerencia}
+                        value={formik.values.usuario}
                     >
-                        {gerencias &&
-                        gerencias.map((gerencia) => (
+                        {usuarios &&
+                        usuarios.map((usuario) => (
                             <MenuItem
                             style={{ fontSize: "11pt", fontFamily: "Roboto" }}
                             >
@@ -222,22 +241,25 @@ const Reserva = () => {
                     <b>Elegí el piso</b>
                 </InputLabel>
                 <Select
-                    id="gerencia"
-                    name="gerencia"
+                    id="piso"
+                    name="piso"
                     style={{
                     marginBottom: "15px",
                     minWidth: "150",
                     }}
                     onChange={formik.handleChange}
-                    value={formik.values.gerencia}
+                    value={formik.values.piso}
                 >
-                    {gerencias &&
-                    gerencias.map((gerencia) => (
+                    {pisos &&
+                    pisos.map((piso) => (
                         <MenuItem
-                        style={{ fontSize: "11pt", fontFamily: "Roboto" }}
+                        style={{ fontSize: "11pt", fontFamily: "Armata" }}
+                        key={`piso_${piso.pID}`}
+                        value={piso.pID}
                         >
-                            
+                            {piso.Nombre}
                         </MenuItem>
+
                     ))}
                 </Select>
                 </FormControl>
@@ -245,35 +267,7 @@ const Reserva = () => {
                   </Grid>
                   <Grid container>
                   <Grid item xs>
-                    <FormControl
-                    style={{
-                        marginTop: "3%",
-                        alignSelf: "center",
-                    }}
-                    >
-                    <InputLabel>
-                        <b>Elegí el colaborador</b>
-                    </InputLabel>
-                    <Select
-                        id="gerencia"
-                        name="gerencia"
-                        style={{
-                        marginBottom: "15px",
-                        minWidth: "150",
-                        }}
-                        onChange={formik.handleChange}
-                        value={formik.values.gerencia}
-                    >
-                        {gerencias &&
-                        gerencias.map((gerencia) => (
-                            <MenuItem
-                            style={{ fontSize: "11pt", fontFamily: "Roboto" }}
-                            >
-                                
-                            </MenuItem>
-                        ))}
-                    </Select>
-                  </FormControl>
+                    
                   </Grid>
                   <Grid item xs>
                   <FormControl
@@ -286,21 +280,23 @@ const Reserva = () => {
                         <b>Elegí el horario</b>
                     </InputLabel>
                     <Select
-                        id="gerencia"
-                        name="gerencia"
+                        id="hora"
+                        name="hora"
                         style={{
                         marginBottom: "15px",
                         minWidth: "150",
                         }}
                         onChange={formik.handleChange}
-                        value={formik.values.gerencia}
+                        value={formik.values.hora}
                     >
-                        {gerencias &&
-                        gerencias.map((gerencia) => (
+                        {horarios &&
+                        horarios.map((hora) => (
                             <MenuItem
-                            style={{ fontSize: "11pt", fontFamily: "Roboto" }}
+                            style={{ fontSize: "11pt", fontFamily: "Armata" }}
+                            key={`hora_${hora.id}`}
+                            value={hora.id}
                             >
-                                
+                                {hora.horario}
                             </MenuItem>
                         ))}
                     </Select>

@@ -1,4 +1,6 @@
 import React, { Component, useEffect, useState } from "react";
+import { withRouter, Link, Redirect } from "react-router-dom";
+
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import { Container, Checkbox, FormControl, FormGroup, FormControlLabel } from "@material-ui/core";
@@ -7,8 +9,6 @@ import * as Api from '../apis/DiagnosticosAPI';
 import Header from '../shared/Header';
 import Sidebar from './Sidebar';
 import { useAlert } from 'react-alert';
-
-
 
 const Diagnostico = (props) => {
 
@@ -23,6 +23,9 @@ const Diagnostico = (props) => {
   }));
 
   const classes = useStyles();
+
+  const [done, setDone] = useState(false);
+
   const [check, setCheck] = useState({
     temperatura: false,
     gusto: false,
@@ -45,37 +48,52 @@ const Diagnostico = (props) => {
 
   const guardarDiagnostico = (temperatura, gusto, contacto, embarazada, cancer, diabetes, hepatica, olfato, garganta, respiratoria) => {
 
-    Api.saveDiagnostico(temperatura, gusto, contacto, embarazada, cancer, diabetes, hepatica, olfato, garganta, respiratoria)
-    .then(response => {
-      alert.show("Guardado Correctamente!");
-      //go back
-    })          
-    .catch(function(error) {
-      if (error.response == undefined)
-        alert.show("" + error);
-      else
-        alert.show("" + error.response.data.error);
-    });
+      Api.saveDiagnostico(temperatura, gusto, contacto, embarazada, cancer, diabetes, hepatica, olfato, garganta, respiratoria)
+          .then(response => {
+            alert.show("Guardado Correctamente!");
+            setDone(true);
+          })          
+              .catch(function(error) {
+                if (error.response == undefined)
+                  alert.show("" + error);
+                else
+                  alert.show("" + error.response.data.error);
+              });
   };
 
   const formik = useFormik({
     initialValues: {
-      temperatura: "",
-      gusto: "",
-      contacto: "",
-      embarazada: "", 
-      cancer: "",
-      diabetes: "", 
-      hepatica: "", 
-      olfato: "", 
-      garganta: "", 
-      respiratoria: ""
+      temperatura: false,
+      gusto: false,
+      contacto: false,
+      embarazada: false, 
+      cancer: false,
+      diabetes: false, 
+      hepatica: false, 
+      olfato: false, 
+      garganta: false, 
+      respiratoria: false
     },
     onSubmit: (values) => {
       const { temperatura, gusto, contacto, embarazada, cancer, diabetes, hepatica, olfato, garganta, respiratoria } = values;
       guardarDiagnostico(temperatura, gusto, contacto, embarazada, cancer, diabetes, hepatica, olfato, garganta, respiratoria);
     },
   });
+
+  // const diagnosticoValido = () => {
+  //     Api.getUserDiagnostico()
+  //         .then(response => {
+  //           alert.show("Ya tienes un diagnóstico válido registrado.");
+  //           setDone(true);
+  //         })          
+  //             .catch(function(error) {
+  //               if (error.response == undefined)
+  //                 alert.show("" + error);
+  //               else
+  //                 alert.show("" + error.response.data.error);
+  //             });
+  // }
+  // diagnosticoValido()
 
   return ( 
     <div>
@@ -163,6 +181,7 @@ const Diagnostico = (props) => {
           </div>
         </Container>
       </div>
+    { done ? <Redirect to="/Home"/> : null }
     </div>
   );
 }

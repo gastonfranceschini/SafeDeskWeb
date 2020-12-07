@@ -9,7 +9,7 @@ body {
 }
 
 .Sidebar {
-  height: 130%;
+  height: 100vh;
   width: 24vw;
   background-color: #2F4050;
   position: absolute;
@@ -84,4 +84,17 @@ body {
 
 #gerencia {
   width: 240px !important;
+}
+
+.MuiGrid-grid-xs-true {
+  flex-grow: 0 !important;
+}
+
+#reserva-form > div > div:nth-child(2) > div > div {
+  width: 526px !important;
+  margin-left: -24px !important;
+}
+
+#reserva-form > div > div:nth-child(2) > div > label {
+  left: -24px;
 }
