@@ -16,5 +16,7 @@ export const saveDiagnostico = async ( temp,  perdioGusto,  contacto,  estoyEmba
     "EstoyEmbarazada": estoyEmbarazada , "Cancer": cancer  , "Diabetes": diabetes,
     "Hepatica": hepatica , "PerdioOlfato": perdioOlfato  , "DolorGarganta": dolorGarganta, "DificultadRespiratoria" : dificultadRespiratoria}
 
+    console.log(await http.post(url, data))
+
     return await http.post(url, data);
 }
