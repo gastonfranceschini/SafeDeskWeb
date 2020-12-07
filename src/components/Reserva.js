@@ -6,6 +6,8 @@ import { setMinutes, getDay, addDays, formatISO } from "date-fns";
 import { useFormik } from "formik";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
+import { useAlert } from 'react-alert';
+
 import {
     MenuItem,
     Select,
@@ -18,6 +20,7 @@ import {
 import Header from '../shared/Header';
 import Sidebar from './Sidebar2';
 import { getEdificios, getPisos, getHoras, saveTurno } from '../apis/TurnosAPI';
+import { getUsuariosDependientes } from '../apis/UsuariosAPI';
 
 const isWeekday = (date) => {
     const day = getDay(date);
@@ -27,12 +30,14 @@ const isWeekday = (date) => {
 //en este metodo se envia la fecha a la base para recuperar el resto de los datos
 const Reserva = () => {
     const [feriados, setFeriados] = useState([]);
-    const [gerencias, setGerencias] = useState([]);
+    const [usuarios, setUsuarios] = useState([]);
     const [edificios, setEdificios] = useState([]);
     const [pisos, setPisos] = useState([]);
-    const [horas, setHoras] = useState([]);
+    const [horarios, setHorarios] = useState([]);
+    const [fechaSel, setFechaSel] = useState();
+    const alert = useAlert();
 
-    const useStyles = makeStyles((theme) => ({
+    /*const useStyles = makeStyles((theme) => ({
       formControl: {
         width: "100%",
       },
@@ -45,38 +50,69 @@ const Reserva = () => {
         justifyContent: 'center'
       }
     }));
-    const classes = useStyles();
+    const classes = useStyles();*/
 
 
     const formik = useFormik({
         initialValues: {
           fecha: "",
-          gerencia: "",
+          usuario: "",
           edificio: "",
           piso: "",
           hora: "",
         },
         onSubmit: (values) => {
-          const { fecha, gerencia, edificio, piso, hora } = values;
-          const fechaAux = formatISO(new Date(`${fecha}`), {
+          const { fecha, usuario, edificio, piso, hora } = values;
+          /*const fechaAux = formatISO(new Date(`${fecha}`), {
             representation: "date",
           });
           const obj = {
             fecha: fecha,
-            gerencia: gerencia,
+            usuario: usuario,
             edificio: edificio,
             piso: piso,
             hora: hora,
-          };
+          };*/
+          guardarReserva(usuario, fechaSel, piso, edificio, hora);
           //dispatch(setTurnoValues(obj));
           //deshabilitar();
         },
       });
 
       async function handleDateChange(date) {
-        const res = await getEdificios(date);
+        const fechaAux = formatISO(new Date(`${date}`), {
+          representation: "date",
+        });
+        setFechaSel(fechaAux);
+        const res = await getEdificios(fechaAux);
         setEdificios(res.data);
       }
+
+      async function handleEdificiosChange(idEdificio) {
+        if (idEdificio)
+        {
+          const res = await getPisos(idEdificio,fechaSel);
+          setPisos(res.data);
+          const res2 = await getHoras(idEdificio,fechaSel);
+          setHorarios(res2.data);
+        }
+      }
+
+
+      const guardarReserva = (idUsuario, FechaTurno, IdPiso, IdEdificio, idHorarioEntrada) => {
+
+        saveTurno(idUsuario, FechaTurno, IdPiso, IdEdificio, idHorarioEntrada)
+            .then(response => {
+              alert.show("Reserva grabada correctamente!");
+              //setDone(true);
+            })          
+                .catch(function(error) {
+                  if (error.response == undefined)
+                    alert.show("" + error);
+                  else
+                    alert.show("" + error.response.data.error);
+                });
+    };
 
       function populateFeriados(holiday) {
         const feriadoData = [];
@@ -88,6 +124,17 @@ const Reserva = () => {
         }
         return feriadoData;
       }
+
+      async function cargarUsuarios() {
+        const res = await getUsuariosDependientes();
+        setUsuarios(res.data);
+      }
+
+      useEffect(() => {
+        cargarUsuarios();
+        const defaultEdificio = [{ eID : 0, Nombre: 'Seleccionar Fecha', Direccion: '' }]
+        setEdificios(defaultEdificio);
+      }, []);
 
       /*useEffect(() => {
         try {
@@ -111,14 +158,12 @@ const Reserva = () => {
         <p >Selecciona una fecha y un sitio para reservar!</p>
         <br/>
         <form onSubmit={formik.handleSubmit}
-            id="reserva-form"
+            //id="reserva-form"
             style={{
               display: "flex",
               justifyContent: "center",
               flexDirection: "column",
             }}>
-            <Grid container className={classes.form}>
-              <Grid item xs>
                 <FormControl>
                   <InputLabel>Elegí la fecha</InputLabel>
                     <div id="datePicker">
@@ -145,8 +190,7 @@ const Reserva = () => {
                       />
                     </div>
                   </FormControl>
-                </Grid>
-                <Grid item xs>
+
                     <FormControl
                     style={{
                         marginTop: "3%",
@@ -163,25 +207,25 @@ const Reserva = () => {
                         marginBottom: "15px",
                         minWidth: "50",
                         }}
-                        onChange={formik.handleChange}
                         value={formik.values.edificio}
-                        selected={formik.values.edificio}
+                        onChange={(e) => {
+                          formik.handleChange(e);
+                          handleEdificiosChange(e.target.value);
+                        }}
                     >
                         {edificios &&
                         edificios.map((edificio) => (
                             <MenuItem
                             style={{ fontSize: "11pt", fontFamily: "Armata" }}
-                            key={`edificio_${edificio.id}`}
-                            value={edificio.id}
+                            key={`edificio_${edificio.eID}`}
+                            value={edificio.eID}
                             >
                                 {edificio.Nombre} - {edificio.Direccion}
                             </MenuItem>
                         ))}
                     </Select>
                   </FormControl>
-              </Grid>
-              <Grid container>
-                <Grid item xs>
+
                   <FormControl
                     style={{
                         marginTop: "3%",
@@ -189,30 +233,31 @@ const Reserva = () => {
                     }}
                     >
                     <InputLabel>
-                        <b>Elegí la gerencia</b>
+                        <b>Elegí el colaborador</b>
                     </InputLabel>
                     <Select
-                        id="gerencia"
-                        name="gerencia"
+                        id="usuario"
+                        name="usuario"
                         style={{
                         marginBottom: "15px",
                         minWidth: "150",
                         }}
                         onChange={formik.handleChange}
-                        value={formik.values.gerencia}
+                        value={formik.values.usuario}
                     >
-                        {gerencias &&
-                        gerencias.map((gerencia) => (
+                        {usuarios &&
+                        usuarios.map((usuario) => (
                             <MenuItem
-                            style={{ fontSize: "11pt", fontFamily: "Roboto" }}
+                            style={{ fontSize: "11pt", fontFamily: "Armata" }}
+                            key={`usuario_${usuario.dni}`}
+                            value={usuario.dni}
                             >
-                                
+                                {usuario.nombre}
                             </MenuItem>
                         ))}
                     </Select>
                     </FormControl>
-                  </Grid>
-                  <Grid item xs>
+
                   <FormControl
                 style={{
                     marginTop: "3%",
@@ -223,60 +268,29 @@ const Reserva = () => {
                     <b>Elegí el piso</b>
                 </InputLabel>
                 <Select
-                    id="gerencia"
-                    name="gerencia"
+                    id="piso"
+                    name="piso"
                     style={{
                     marginBottom: "15px",
                     minWidth: "150",
                     }}
                     onChange={formik.handleChange}
-                    value={formik.values.gerencia}
+                    value={formik.values.piso}
                 >
-                    {gerencias &&
-                    gerencias.map((gerencia) => (
+                    {pisos &&
+                    pisos.map((piso) => (
                         <MenuItem
-                        style={{ fontSize: "11pt", fontFamily: "Roboto" }}
+                        style={{ fontSize: "11pt", fontFamily: "Armata" }}
+                        key={`piso_${piso.pID}`}
+                        value={piso.pID}
                         >
-                            
+                            {piso.Nombre}
                         </MenuItem>
+
                     ))}
                 </Select>
                 </FormControl>
-                  </Grid>
-                  </Grid>
-                  <Grid container>
-                  <Grid item xs>
-                    <FormControl
-                    style={{
-                        marginTop: "3%",
-                        alignSelf: "center",
-                    }}
-                    >
-                    <InputLabel>
-                        <b>Elegí el colaborador</b>
-                    </InputLabel>
-                    <Select
-                        id="gerencia"
-                        name="gerencia"
-                        style={{
-                        marginBottom: "15px",
-                        minWidth: "150",
-                        }}
-                        onChange={formik.handleChange}
-                        value={formik.values.gerencia}
-                    >
-                        {gerencias &&
-                        gerencias.map((gerencia) => (
-                            <MenuItem
-                            style={{ fontSize: "11pt", fontFamily: "Roboto" }}
-                            >
-                                
-                            </MenuItem>
-                        ))}
-                    </Select>
-                  </FormControl>
-                  </Grid>
-                  <Grid item xs>
+
                   <FormControl
                     style={{
                       marginTop: "3%",
@@ -287,32 +301,32 @@ const Reserva = () => {
                         <b>Elegí el horario</b>
                     </InputLabel>
                     <Select
-                        id="gerencia"
-                        name="gerencia"
+                        id="hora"
+                        name="hora"
                         style={{
                         marginBottom: "15px",
                         minWidth: "150",
                         }}
                         onChange={formik.handleChange}
-                        value={formik.values.gerencia}
+                        value={formik.values.hora}
                     >
-                        {gerencias &&
-                        gerencias.map((gerencia) => (
+                        {horarios &&
+                        horarios.map((hora) => (
                             <MenuItem
-                            style={{ fontSize: "11pt", fontFamily: "Roboto" }}
+                            style={{ fontSize: "11pt", fontFamily: "Armata" }}
+                            key={`hora_${hora.id}`}
+                            value={hora.id}
                             >
-                                
+                                {hora.horario}
                             </MenuItem>
                         ))}
                     </Select>
                 </FormControl>
-                  </Grid>
-                </Grid>
+
                 <Button
                   style={{ alignSelf: "center" ,textTransform: "none"}}
                   variant="contained"
                   type= 'submit'>Confirmar</Button>
-            </Grid>
             </form>
         </Container>
       </div>
