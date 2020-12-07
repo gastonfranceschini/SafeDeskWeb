@@ -70,3 +70,14 @@
   span {
     margin-left: 16px;
   }
+
+  .textUser{
+    color: white;
+    font-size: 118%;
+    margin-left: 82%;
+    font-weight: bold;
+  }
+
+  .textUser:hover {
+    cursor: pointer;
+  }

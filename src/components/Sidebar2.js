@@ -8,7 +8,6 @@ import { IconContext } from 'react-icons';
 import * as ReportesAPI from "../apis/ReportesAPI";
 import { useAlert } from 'react-alert';
 import { logoutUser,getToken,getUser } from "../utils/auth-helper";
-import { Divider } from '@material-ui/core';
 
 function Navbar() {
 
@@ -66,10 +65,11 @@ function Navbar() {
       <IconContext.Provider value={{ color: '#fff' }}>
         <div className='navbar'>
           <Link to='#' className='menu-bars'>
-            <FaIcons.FaBars onClick={showSidebar}>
-              <b>{getUser().Nombre} - { getUser().Email}</b>
-            </FaIcons.FaBars>
+            <FaIcons.FaBars onClick={showSidebar}/>
           </Link>
+          <div className='textUser' onClick={()=>{window.location.pathname = '/Perfil';}}>
+              {getUser().Nombre} - { getUser().Email}
+          </div>
         </div>
         <nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>
           <ul className='nav-menu-items' onClick={showSidebar}>

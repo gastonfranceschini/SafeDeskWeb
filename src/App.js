@@ -8,6 +8,7 @@ import Reporte from "./components/Reporte";
 import Reserva from './components/Reserva';
 import MisReservas from './components/MisReservas';
 import Diagnostico from './components/Diagnostico';
+import Perfil from './components/Perfil';
 
 import './utils/App.css';
 
@@ -23,6 +24,7 @@ class App extends Component {
           <Route exact path="/Diagnostico" component={Diagnostico} />
           <Route exact path="/Administracion" component={Administracion} /> 
           <Route exact path="/Reporte" component={Reporte} />
+          <Route exact path="/Perfil" component={Perfil} />
         </Switch>
       </Router>
     );
