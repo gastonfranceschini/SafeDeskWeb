@@ -8,42 +8,6 @@ body {
   padding: 0;
 }
 
-.Sidebar {
-  height: 100vh;
-  width: 24vw;
-  background-color: #2F4050;
-  position: absolute;
-  min-width: 200px;
-}
-
-.SidebarList {
-  height: auto;
-  padding: 0;
-  width: 100%;
-}
-
-.SidebarList .row {
-  width: 100%;
-  height: 60px;
-  list-style-type: none;
-  margin: 0%;
-  display: flex;
-  flex-direction: row;
-  color: white;
-  justify-content: center;
-  align-items: center;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
-}
-
-.SidebarList .row:hover {
-  cursor: pointer;
-  background-color: #293846;
-}
-.SidebarList #active {
-  background-color: #293846;
-
-}
-
 .userName{
   margin: 25px 25px; 
   color: #fff;
@@ -116,4 +80,27 @@ body {
   align-items: center;
   justify-content: center;
   font-size: 3rem;
+}
+
+.paperPerfil {
+  padding-left: 50pt;
+  padding-top: 30pt;
+  padding-bottom: 40pt;
+}
+
+.divPerfil {
+  padding-left: 200pt;
+  padding-right: 200pt;
+  padding-top: 80pt;
+}
+
+.txtTit {
+  font-size: x-large;
+  margin-top: 25pt;
+  font-weight: bold;
+}
+
+.txtUsr {
+  font-size: large;
+  margin-top: 5pt;
 }
