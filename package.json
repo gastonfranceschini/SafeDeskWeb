@@ -21,6 +21,8 @@
     "react-scripts": "4.0.1",
     "react-window": "^1.8.6",
     "stringify-object": "^3.3.0",
+    "sweetalert": "^2.1.2",
+    "sweetalert2": "^9.17.1",
     "web-vitals": "^0.2.4",
     "yup": "^0.29.3"
   },
