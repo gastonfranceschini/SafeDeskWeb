@@ -74,10 +74,17 @@
   .textUser{
     color: white;
     font-size: 118%;
-    margin-left: 82%;
+    margin-left: 79%;
     font-weight: bold;
   }
 
   .textUser:hover {
     cursor: pointer;
+  }
+
+  .txtmenu{
+    color: white;
+    font-size: 118%;
+    margin-left: 1%;
+    font-weight: bold;
   }
