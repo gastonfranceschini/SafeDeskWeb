@@ -94,12 +94,13 @@ const MisReservas = (prop) => {
         <div>
           <Container maxWidth="sm">
             <h1 className='ExpertaText'>Mis Reservas</h1>
-            <p className='HomeDescr'>Reservas Proximas</p>
+            <p className='HomeDescr'>Reservas Activas</p>
             <ListaTurnosActivos />
             <br/>
             <br/>
             <p className='HomeDescr'>Reservas Historicas</p>
             <ListaTurnosHistoricos/>
+            <br/>
           </Container>
         </div>
       </div>

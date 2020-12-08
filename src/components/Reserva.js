@@ -1,4 +1,5 @@
 import React, { Component, useEffect, useState } from "react";
+import { withRouter, Link, Redirect } from "react-router-dom";
 import DatePicker, { registerLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { makeStyles } from "@material-ui/core/styles";
@@ -36,6 +37,7 @@ const Reserva = () => {
     const [horarios, setHorarios] = useState([]);
     const [fechaSel, setFechaSel] = useState();
     const alert = useAlert();
+    const [done, setDone] = useState(false);
 
     /*const useStyles = makeStyles((theme) => ({
       formControl: {
@@ -63,19 +65,8 @@ const Reserva = () => {
         },
         onSubmit: (values) => {
           const { fecha, usuario, edificio, piso, hora } = values;
-          /*const fechaAux = formatISO(new Date(`${fecha}`), {
-            representation: "date",
-          });
-          const obj = {
-            fecha: fecha,
-            usuario: usuario,
-            edificio: edificio,
-            piso: piso,
-            hora: hora,
-          };*/
           guardarReserva(usuario, fechaSel, piso, edificio, hora);
-          //dispatch(setTurnoValues(obj));
-          //deshabilitar();
+          setDone(true);
         },
       });
 
@@ -104,7 +95,7 @@ const Reserva = () => {
         saveTurno(idUsuario, FechaTurno, IdPiso, IdEdificio, idHorarioEntrada)
             .then(response => {
               alert.show("Reserva grabada correctamente!");
-              //setDone(true);
+              setDone(true);
             })          
                 .catch(function(error) {
                   if (error.response == undefined)
@@ -132,8 +123,11 @@ const Reserva = () => {
 
       useEffect(() => {
         cargarUsuarios();
-        const defaultEdificio = [{ eID : 0, Nombre: 'Seleccionar Fecha', Direccion: '' }]
-        setEdificios(defaultEdificio);
+        const defaultSelFecha = [{ eID : 0, Nombre: 'Seleccionar Fecha', Direccion: '' }]
+        setEdificios(defaultSelFecha);
+        const defaultSelEdificio = [{ pID : 0, Nombre: 'Seleccionar Edificio',id : 0, horario: 'Seleccionar Edificio' }]
+        setHorarios(defaultSelEdificio);
+        setPisos(defaultSelEdificio);  
       }, []);
 
       /*useEffect(() => {
@@ -153,6 +147,7 @@ const Reserva = () => {
       <Header />
       <Sidebar />
       <div>
+        <br/>
         <Container maxWidth="sm">
         <h1 className='ExpertaText'>Reserva tu Turno</h1>
         <p >Selecciona una fecha y un sitio para reservar!</p>
@@ -173,6 +168,7 @@ const Reserva = () => {
                           marginRight: "10%",
                           width: "50%",
                           alignSelf: "center",
+                          justifyContent: "center",
                         }}
                         id="fecha"
                         locale="es"
@@ -330,6 +326,7 @@ const Reserva = () => {
             </form>
         </Container>
       </div>
+      { done ? <Redirect to="/Home"/> : null }
     </div>
     );
 }

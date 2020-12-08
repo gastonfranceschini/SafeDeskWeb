@@ -12,11 +12,6 @@ export const getTurno = async (idTurno) => {
     return await http.get(url);
 }
 
-/*export const saveTurno = async (FechaTurno,Piso,Edificio,Horario) => {
-    const url = endpointBase + 'FechaTurno/'+FechaTurno+'/Piso/'+Piso+'/Edificio/'+Edificio+'/Horario/'+Horario
-    //var data =  {"dni": dni , "oldPassword": passOld  , "newPassword": passNew}
-    return await http.post(url);
-}*/
 
 export const getEdificios = async (fecha) => {
     const url = endpointBase + 'edificios/fecha/'+fecha

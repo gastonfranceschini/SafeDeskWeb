@@ -69,7 +69,9 @@ function Navbar() {
           </Link>
           <b className='txtmenu'>Menu</b>
           <b className='textUser' onClick={()=>{window.location.pathname = '/Perfil';}}>
-              {getUser().Nombre} - { getUser().Email}
+              {getUser().Nombre}
+              <br/>
+              {getUser().Email}
           </b>
         </div>
         <nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>
