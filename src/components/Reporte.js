@@ -1,6 +1,5 @@
 import React, { Component, useEffect, useState } from "react";
 import Container from "@material-ui/core/Container"
-
 import Header from "../shared/Header"
 import Sidebar from "./Sidebar2"
 import DatePicker, { registerLocale } from "react-datepicker";
@@ -17,6 +16,9 @@ import {
     Zoom,
   } from "@material-ui/core";
 
+  import { getReportes, getReporteDinamico } from '../apis/TurnosAPI';
+  import { getEdificios, getPisos, getHoras, saveTurno } from '../apis/ReportesAPI';
+  import { getGerencias, getUsuariosDependientes } from '../apis/UsuariosAPI';
   
 
 const Reporte = (prop) => {
@@ -26,9 +28,48 @@ const isWeekday = (date) => {
   return day !== 0 && day !== 6;
 };
 
-//en este metodo se envia la fecha a la base para recuperar el resto de los datos
+  const [reportes, setReportes] = useState([]);
   const [feriados, setFeriados] = useState([]);
-  const [gerencias, setGerencias] = useState([]);
+  const [usuarios, setUsuarios] = useState([]);
+  const [edificios, setEdificios] = useState([]);
+  const [pisos, setPisos] = useState([]);
+  const [horarios, setHorarios] = useState([]);
+  const [fechaSel, setFechaSel] = useState();
+  const alert = useAlert();
+  const [done, setDone] = useState(false);
+
+
+  async function cargarGerencias() {
+    const res = await getGerencias();
+    setUsuarios(res.data);
+  }
+
+  async function cargarUsuarios() {
+    const res = await getUsuariosDependientes();
+    setUsuarios(res.data);
+  }
+
+  async function cargarReportes() {
+    const res = await getReportes();
+    setReportes(res.data);
+    configBotonesActivos()
+  }
+
+  const configBotonesActivos = () =>
+  {
+    NULL;
+  };
+
+  useEffect(() => {
+    cargarGerencias(); //este ponerlo cuando elija report?
+    cargarUsuarios(); //este ponerlo cuando elija report? y edificios 2099-1-1
+    cargarReportes();
+    const defaultSelFecha = [{ eID : 0, Nombre: 'Seleccionar Reporte', Direccion: '' }]
+    setEdificios(defaultSelFecha);
+    const defaultSelEdificio = [{ pID : 0, Nombre: 'Seleccionar Edificio',id : 0, horario: 'Seleccionar Edificio' }]
+    setHorarios(defaultSelEdificio);
+    setPisos(defaultSelEdificio);  
+  }, []);
 
   const formik = useFormik({
       initialValues: {
