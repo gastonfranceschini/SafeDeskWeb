@@ -10,7 +10,9 @@ export const getReportes = async (values) => {
 export const getReporteDinamico = async (idReporte,campos,valores,formatoAlternativo) => {
     const url = endpointBase + 'dinamic/' + idReporte;
     var data =  {"campos": campos , "valores": valores  , "formatoAlternativo": formatoAlternativo}
-    return await http.post(url, data);
+    return await http.post(url, data/*,{
+        responseType: 'blob',}*/
+    );
 }
 
 export const getConfig = async (nombreConfig) => {
