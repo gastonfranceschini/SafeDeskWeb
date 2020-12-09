@@ -162,14 +162,33 @@ const Reserva = () => {
           setSubmit(true);
       }
 
-      let cupoE = null
+      let cupoE = null;
       const setCupoE = (value) => {
         edificios.map((edificio) => {
-          if(edificio.eID === value.eID){
+          if(edificio.eID == value){
             cupoE = edificio.Cupo;
           }
+        }) 
+      }
+
+      let cupoP = null;
+      const setCupoP = (value) => {
+        pisos.map((piso) => {
+          if(piso.pID == value){
+            cupoP = piso.Cupo;
+          }
         })
-        
+      }
+
+      let cupoH = null;
+      const setCupoH = (value) => {
+        console.log(value);
+        horarios.map((hora) => {
+          console.log("id hora " + hora.hID);
+          if(hora.hID == value){
+            cupoH = hora.Cupo;
+          }
+        })
       }
 
       const resetValues = () => {
@@ -255,19 +274,18 @@ const Reserva = () => {
                             style={{ fontSize: "11pt", fontFamily: "Armata" }}
                             key={`edificio_${edificio.eID}`}
                             value={edificio.eID}
-                            onChange={setCupoE(edificio)}
+                            onChange={setCupoE(formik.values.edificio)}
                             >
-                                {edificio.Nombre} - {edificio.Direccion} - {edificio.Cupo}
+                                {edificio.Nombre} - {edificio.Direccion}
                             </MenuItem>
                         ))}
                     </Select>
                   </FormControl>
                   {cupoE != null && (
-                    <InputLabel style={{ color: "blue" }}>
+                    <InputLabel style={{ color: "blue", fontSize: "10pt" }}>
                       <b>{`Cupo: ${cupoE}`}</b>
                     </InputLabel>
                   )}
-
                   <FormControl
                     style={{
                         marginTop: "3%",
@@ -327,6 +345,7 @@ const Reserva = () => {
                         style={{ fontSize: "11pt", fontFamily: "Armata" }}
                         key={`piso_${piso.pID}`}
                         value={piso.pID}
+                        onChange={setCupoP(formik.values.piso)}
                         >
                             {piso.Nombre}
                         </MenuItem>
@@ -334,7 +353,11 @@ const Reserva = () => {
                     ))}
                 </Select>
                 </FormControl>
-
+                {cupoP != null && (
+                    <InputLabel style={{ color: "blue", fontSize: "10pt" }}>
+                      <b>{`Cupo: ${cupoP}`}</b>
+                    </InputLabel>
+                  )}
                   <FormControl
                     style={{
                       marginTop: "3%",
@@ -362,12 +385,18 @@ const Reserva = () => {
                             key={`hora_${hora.id}`}
                             value={hora.id}
                             onClick={handleSubmit}
+                            onChange={setCupoH(formik.values.hora)}
                             >
-                              {hora.horario}
+                              {hora.horario} - {hora.Cupo}
                             </MenuItem>
                         ))}
                     </Select>
                 </FormControl>
+                {cupoH != null && (
+                    <InputLabel style={{ color: "blue", fontSize: "10pt" }}>
+                      <b>{`Cupo: ${cupoH}`}</b>
+                    </InputLabel>
+                  )}
                 <div style={{ marginTop: "3%", alignSelf: "center" }}>  
                 {submit == true && (
                   <Button
