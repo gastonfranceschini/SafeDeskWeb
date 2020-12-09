@@ -25,6 +25,11 @@ const Home = (props) => {
         <br/>
         <br/>
         Hacemos todo lo posible por mantener las maximas medidas de seguridad, les deseamos un buen reencuentro con sus compañeros!
+        <br/>
+        <br/>
+        <a href="/Reserva">
+        Reservar nuevo turno
+        </a>
       </div>
       </Container>
       

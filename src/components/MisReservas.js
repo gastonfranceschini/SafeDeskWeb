@@ -93,6 +93,7 @@ const MisReservas = (prop) => {
         <Sidebar/>
         <div>
           <Container maxWidth="sm">
+            <br/>
             <h1 className='ExpertaText'>Mis Reservas</h1>
             <p className='HomeDescr'>Reservas Activas</p>
             <ListaTurnosActivos />

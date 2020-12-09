@@ -63,23 +63,28 @@ function Navbar() {
   return (
     <>
       <IconContext.Provider value={{ color: '#fff' }}>
+        
         <div className='navbar'>
           <Link to='#' className='menu-bars'>
             <FaIcons.FaBars onClick={showSidebar}/>
           </Link>
           <b className='txtmenu'>Menu</b>
           <b className='textUser' onClick={()=>{window.location.pathname = '/Perfil';}}>
+            <div style={{textAlign: 'right'}}>
               {getUser().Nombre}
               <br/>
               {getUser().Email}
+            </div>
           </b>
         </div>
+
         <nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>
           <ul className='nav-menu-items' onClick={showSidebar}>
             <li className='navbar-toggle'>
               <Link to='#' className='menu-bars'>
                 <AiIcons.AiOutlineClose />
               </Link>
+              <b className='txtmenu'> Menu</b>
             </li>
             {SidebarData(diagnosticosActivo,turnosActivo).map((item, index)=> {
               return (
@@ -95,9 +100,17 @@ function Navbar() {
                     <span>{item.title}</span>
                   </Link>
                 </li>
+
               );
             })}
+            <br/>
+            <br/>
+            <div style={{textAlign: 'center'}}>
+              <a style={{fontSize: 12, color: '#fff' }} href="mailto:giglesias@sml.com.ar?Subject=Reporte%20Incidente%20SafeDesk">
+                Reportar Incidente</a>
+            </div>
           </ul>
+
         </nav>
       </IconContext.Provider>
     </>
