@@ -37,6 +37,7 @@ const isWeekday = (date) => {
   const [pisos, setPisos] = useState([]);
   const [horarios, setHorarios] = useState([]);
   const [fechaSel, setFechaSel] = useState();
+  const [repoSel, setRepoSel] = useState();
   const alert = useAlert();
   const [done, setDone] = useState(false);
 
@@ -95,6 +96,7 @@ const isWeekday = (date) => {
         setHorariosVisible(reporte.SelHorario);
         setPisosVisible(reporte.SelPiso);
         setFechaVisible(reporte.SelFecha);
+        setRepoSel(reporte.Nombre);
       }
     })
   };
@@ -156,9 +158,14 @@ const isWeekday = (date) => {
   }
 
   function downloadFile(absoluteUrl) {
+
+    /*const fechaAux = formatISO(new Date(), {
+      representation: "date",
+    });*/
+
     var link = document.createElement('a');
     link.href = absoluteUrl;
-    link.download = 'NuevoReporte.CSV';
+    link.download = 'Rep-'+ repoSel +'.CSV';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -191,7 +198,7 @@ const isWeekday = (date) => {
 };
 
   async function handleDateChange(date) {
-    resetValues();
+    //resetValues();
     const fechaAux = formatISO(new Date(`${date}`), {
       representation: "date",
     });
@@ -230,14 +237,21 @@ const isWeekday = (date) => {
     }
   }
 
+  async function handleGerenciasChange(idGerencia) {
+    if (idGerencia)
+    {
+     // await cargarPisos(idGerencia)
+    }
+  }
+
   async function handleReporteChange(idReporte) {
     if (idReporte)
     {
+      resetValues();
       await cargarGerencias();
       await cargarUsuarios();
       await cargarEdificios();
       configBotonesActivos(idReporte);
-      resetValues();
     }
   }
 
@@ -356,7 +370,7 @@ const isWeekday = (date) => {
               value={formik.values.gerencia}
               onChange={(e) => {
                 formik.handleChange(e);
-                //handleEdificiosChange(e.target.value);
+                handleGerenciasChange(e.target.value);
               }}
           >
               {gerencias &&

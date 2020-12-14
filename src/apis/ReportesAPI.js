@@ -20,7 +20,7 @@ export const getConfig = async (nombreConfig) => {
     return await http.get(url);
 }
 
-export const changePassword = async (nombreConfig,valor) => {
+export const setConfig = async (nombreConfig,valor) => {
     const url = endpointBase + 'configuraciones/'+nombreConfig+'/set/'+valor
     return await http.put(url);
 }
