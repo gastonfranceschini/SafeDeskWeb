@@ -1,13 +1,13 @@
 import React, { Component, useEffect, useState } from "react";
 import Container from "@material-ui/core/Container"
-
 import Header from "../shared/Header"
-import Sidebar from "./Sidebar"
+import Sidebar from "./Sidebar2"
 import DatePicker, { registerLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { makeStyles } from "@material-ui/core/styles";
 import { setMinutes, getDay, addDays, formatISO } from "date-fns";
 import { useFormik } from "formik";
+import { useAlert } from 'react-alert';
 import {
     MenuItem,
     Select,
@@ -17,47 +17,189 @@ import {
     Zoom,
   } from "@material-ui/core";
 
+  import { getReportes, getReporteDinamico } from '../apis/ReportesAPI';
+  import { getEdificios, getPisos, getHoras, saveTurno } from '../apis/TurnosAPI';
+  import { getGerencias, getUsuariosDependientes } from '../apis/UsuariosAPI';
   
 
 const Reporte = (prop) => {
-  
+
 const isWeekday = (date) => {
   const day = getDay(date);
   return day !== 0 && day !== 6;
 };
-
-//en este metodo se envia la fecha a la base para recuperar el resto de los datos
+  const [submit, setSubmit] = useState(false);
+  const [reportes, setReportes] = useState([]);
   const [feriados, setFeriados] = useState([]);
   const [gerencias, setGerencias] = useState([]);
+  const [usuarios, setUsuarios] = useState([]);
+  const [edificios, setEdificios] = useState([]);
+  const [pisos, setPisos] = useState([]);
+  const [horarios, setHorarios] = useState([]);
+  const [fechaSel, setFechaSel] = useState();
+  const alert = useAlert();
+  const [done, setDone] = useState(false);
+
+  const [edificiosVisible, setEdificiosVisible] = useState(0);
+  const [usuariosVisible, setUsuariosVisible] = useState(0);
+  const [fechaVisible, setFechaVisible] = useState(0);
+  const [gerenciasVisible, setGerenciasVisible] = useState(0);
+  const [pisosVisible, setPisosVisible] = useState(0);
+  const [horariosVisible, setHorariosVisible] = useState(0);
+
+  async function cargarGerencias() {
+    const res = await getGerencias();
+    setGerencias(res.data);
+  }
+
+  async function cargarUsuarios() {
+    const res = await getUsuariosDependientes();
+    setUsuarios(res.data);
+  }
+
+  async function cargarEdificios() {
+    const res = await getEdificios("2099-1-1");
+    setEdificios(res.data);
+  }
+
+  async function cargarReportes() {
+    const res = await getReportes();
+    setReportes(res.data);
+  }
+
+  const configBotonesActivos = (idReporte) =>
+  {
+    reportes.map((reporte) => {
+      if(reporte.Id === idReporte){
+        setGerenciasVisible(reporte.SelGerencia);
+        setUsuariosVisible(reporte.SelUsuario);
+        setEdificiosVisible(reporte.SelEdificio);
+        setHorariosVisible(reporte.SelHorario);
+        setPisosVisible(reporte.SelPiso);
+        setFechaVisible(reporte.SelFecha);
+      }
+    })
+  };
+
+  useEffect(() => {
+    cargarReportes();
+    const defaultSelFecha = [{ eID : 0, Nombre: 'Seleccionar Reporte', Direccion: '' }]
+    setEdificios(defaultSelFecha);
+    const defaultSelEdificio = [{ pID : 0, Nombre: 'Seleccionar Edificio',id : 0, horario: 'Seleccionar Edificio' }]
+    setHorarios(defaultSelEdificio);
+    setPisos(defaultSelEdificio);  
+  }, []);
+
 
   const formik = useFormik({
-      initialValues: {
-        fecha: "",
-        gerencia: "",
-        edificio: "",
-        piso: "",
-        hora: "",
-      },
-      onSubmit: (values) => {
-        const { fecha, gerencia, edificio, piso, hora } = values;
-        const fechaAux = formatISO(new Date(`${fecha}`), {
-          representation: "date",
-        });
-        const obj = {
-          fecha: fecha,
-          gerencia: gerencia,
-          edificio: edificio,
-          piso: piso,
-          hora: hora,
-        };
-        //dispatch(setTurnoValues(obj));
-        //deshabilitar();
-      },
-    });
+    initialValues: {
+      fecha: "",
+      gerencia: "",
+      usuario: "",
+      edificio: "",
+      piso: "",
+      hora: "",
+    },
+    onSubmit: (values) => {
+      const { gerencia, usuario, edificio, piso, hora,reporte } = values;
+      validarYConsumirReporte(reporte,usuario, fechaSel, piso, edificio, hora,gerencia)
+    },
+  });
 
-    function handleDateChange(date) {
-        //en este metodo se va a enviar la fecha al back para recuperar los demas datos
+  const resetValues = () => {
+    formik.values.gerencia = "";
+    formik.values.edificio = "";
+    formik.values.usuario = "";
+    formik.values.piso = "";
+    formik.values.hora = "";
+  };
+
+  var campos = [];
+  var valores = [];
+
+  const validarYAgregar = (valorBack,compValor,compActivo) =>
+  {
+    if (compActivo == 1)
+    {
+        campos.push(valorBack);
+        valores.push(compValor);
     }
+    else if (compActivo == 2)
+    {
+      if (compValor == null)
+      {
+        alert.show("El parametro " + valorBack + " es obligatorio!");
+        return false;
+      }
+      campos.push(valorBack);
+      valores.push(compValor);
+    }
+    return true;
+  }
+
+  function downloadFile(absoluteUrl) {
+    var link = document.createElement('a');
+    link.href = absoluteUrl;
+    link.download = 'NuevoReporte.CSV';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+ };
+
+  const validarYConsumirReporte = (idReporte,idUsuario, FechaTurno, IdPiso, IdEdificio, idHorarioEntrada,idGerencia) => {
+    
+    campos = [];
+    valores = [];
+
+    if (!validarYAgregar("gerencia",idGerencia,gerenciasVisible)) {return;};
+    validarYAgregar("usuario",idUsuario,usuariosVisible);
+    validarYAgregar("edificio",IdEdificio,edificiosVisible);
+    validarYAgregar("piso",IdPiso,pisosVisible);
+    validarYAgregar("horario",idHorarioEntrada,horariosVisible);
+    validarYAgregar("fecha",FechaTurno,fechaVisible);
+
+    alert.show("campos " + campos + "valores " + valores);
+
+    getReporteDinamico(idReporte,campos, valores, false)
+    .then(response => {
+      //<a href="data:application/octet-stream,DATA" download="FILENAME">TITLE</a>
+      downloadFile("data:application/octet-stream," + response.data);
+    }).catch(function(error) {
+        if (error.response == undefined)
+          alert.show("" + error);
+        else
+          alert.show("" + error.response.data.error);
+      });
+};
+
+  async function handleDateChange(date) {
+    resetValues();
+    const fechaAux = formatISO(new Date(`${date}`), {
+      representation: "date",
+    });
+    setFechaSel(fechaAux);
+  }
+
+  async function handleEdificiosChange(idEdificio) {
+    if (idEdificio)
+    {
+      const res = await getPisos(idEdificio,"2099-1-1");
+      setPisos(res.data);
+      const res2 = await getHoras(idEdificio,"2099-1-1");
+      setHorarios(res2.data);
+    }
+  }
+
+  async function handleReporteChange(idReporte) {
+    if (idReporte)
+    {
+      await cargarGerencias();
+      await cargarUsuarios();
+      await cargarEdificios();
+      configBotonesActivos(idReporte);
+      resetValues();
+    }
+  }
 
     function populateFeriados(holiday) {
       const feriadoData = [];
@@ -70,201 +212,290 @@ const isWeekday = (date) => {
       return feriadoData;
     }
 
-    return (  
+    return (
       <div>
-        <Header/>
-        <Sidebar/>
+        <Header />
+        <Sidebar />
         <div>
-        <Container maxWidth="sm">
-        <h1 className='ExpertaText'>Reportes</h1>
-        <br/>
-        <form onSubmit={formik.handleSubmit}
+          <br/>
+          <Container maxWidth="sm">
+            <h1 className='ExpertaText'>Reporte</h1>
+            <p >Selecciona un reporte</p>
+            <br/>
+            <form onSubmit={formik.handleSubmit}
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  flexDirection: "column",
+                }}>
+
+            <FormControl
             style={{
-              display: "flex",
-              justifyContent: "center",
-              flexDirection: "column",
-            }}>
-            <FormControl>
+                marginTop: "3%",
+                alignSelf: "center",
+            }}
+            >
+            <InputLabel>
+                <b>Elegí el reporte</b>
+            </InputLabel>
+            <Select
+                id="reporte"
+                name="reporte"
+                required
+                style={{
+                marginBottom: "15px",
+                minWidth: "50",
+                }}
+                value={formik.values.reporte}
+                onChange={(e) => {
+                  formik.handleChange(e);
+                  handleReporteChange(e.target.value);
+                }}
+            >
+                {reportes &&
+                reportes.map((reporte) => (
+                    <MenuItem
+                    style={{ fontSize: "11pt", fontFamily: "Armata" }}
+                    key={`reporte_${reporte.Id}`}
+                    value={reporte.Id}
+                    >
+                        {reporte.Nombre}
+                    </MenuItem>
+                ))}
+            </Select>
+          </FormControl>
+
+          {fechaVisible > 0  && (   
+          <FormControl style={{ alignSelf: "center" }}>
             <InputLabel>Elegí la fecha</InputLabel>
-                <div id="datePicker">
-                  <DatePicker
-                    style={{
-                      marginTop: "10%",
-                      marginRight: "10%",
-                      width: "50%",
-                      alignSelf: "center",
-                    }}
-                    id="fecha"
-                    locale="es"
-                    selected={formik.values.fecha}
-                    name="fecha"
-                    placeholderText="Elegí la fecha"
-                    onChange={(date) => handleDateChange(date)}
-                    dateFormat="MMMM d, yyyy"
-                    filterDate={isWeekday}
-                    minDate={setMinutes(addDays(new Date(), 1), 30)}
-                    maxDate={setMinutes(addDays(new Date(), 30), 30)}
-                    showDisabledMonthNavigation
-                    inline={formik.values.sucursalId !== ""}
-                    excludeDates={populateFeriados(feriados)}
-                  />
-                </div>
+              <div id="datePicker">
+                <DatePicker
+                  style={{
+                    marginTop: "10%",
+                    marginRight: "10%",
+                    width: "50%",
+                    alignSelf: "center",
+                    justifyContent: "center",
+                  }}
+                  id="fecha"
+                  locale="es"
+                  selected={formik.values.fecha}
+                  name="fecha"
+                  placeholderText="Elegí la fecha"
+                  onChange={(date) => handleDateChange(date)}
+                  dateFormat="MMMM d, yyyy"
+                  filterDate={isWeekday}
+                  minDate={setMinutes(addDays(new Date(), 1), 30)}
+                  maxDate={setMinutes(addDays(new Date(), 30), 30)}
+                  showDisabledMonthNavigation
+                  inline={formik.values.sucursalId !== ""}
+                  excludeDates={populateFeriados(feriados)}
+                />
+              </div>
+            </FormControl>
+        )}
+
+        {gerenciasVisible > 0  && (
+          <FormControl
+          style={{
+              marginTop: "3%",
+              alignSelf: "center",
+          }}
+          >
+          <InputLabel>
+              <b>Elegí la gerencia</b>
+          </InputLabel>
+          <Select
+              id="gerencia"
+              name="gerencia"
+              required
+              style={{
+              marginBottom: "15px",
+              minWidth: "50",
+              }}
+              value={formik.values.gerencia}
+              onChange={(e) => {
+                formik.handleChange(e);
+                //handleEdificiosChange(e.target.value);
+              }}
+          >
+              {gerencias &&
+              gerencias.map((gerencia) => (
+                  <MenuItem
+                  style={{ fontSize: "11pt", fontFamily: "Armata" }}
+                  key={`gerencia_${gerencia.id}`}
+                  value={gerencia.id}
+                  >
+                      {gerencia.Nombre}
+                  </MenuItem>
+              ))}
+          </Select>
+        </FormControl>
+        )}
+
+        {usuariosVisible > 0  && (
+            <FormControl
+              style={{
+                  marginTop: "3%",
+                  alignSelf: "center",
+              }}
+              >
+              <InputLabel>
+                  <b>Elegí el colaborador</b>
+              </InputLabel>
+              <Select
+                  id="usuario"
+                  name="usuario"
+                  required
+                  style={{
+                  marginBottom: "15px",
+                  minWidth: "150",
+                  }}
+                  onChange={formik.handleChange}
+                  value={formik.values.usuario}
+              >
+                  {usuarios &&
+                  usuarios.map((usuario) => (
+                      <MenuItem
+                      style={{ fontSize: "11pt", fontFamily: "Armata" }}
+                      key={`usuario_${usuario.dni}`}
+                      value={usuario.dni}
+                      >
+                          {usuario.nombre}
+                      </MenuItem>
+                  ))}
+              </Select>
               </FormControl>
+              )}    
+
+
+            {edificiosVisible > 0  && (
               <FormControl
+              style={{
+                  marginTop: "3%",
+                  alignSelf: "center",
+              }}
+              >
+              <InputLabel>
+                  <b>Elegí el sitio</b>
+              </InputLabel>
+              <Select
+                  id="edificio"
+                  name="edificio"
+                  required
+                  style={{
+                  marginBottom: "15px",
+                  minWidth: "50",
+                  }}
+                  value={formik.values.edificio}
+                  onChange={(e) => {
+                    formik.handleChange(e);
+                    handleEdificiosChange(e.target.value);
+                  }}
+              >
+                  {edificios &&
+                  edificios.map((edificio) => (
+                      <MenuItem
+                      style={{ fontSize: "11pt", fontFamily: "Armata" }}
+                      key={`edificio_${edificio.eID}`}
+                      value={edificio.eID}
+                      >
+                          {edificio.Nombre} - {edificio.Direccion} 
+                      </MenuItem>
+                  ))}
+              </Select>
+            </FormControl>
+            )}
+            
+            {pisosVisible > 0 && (
+            <FormControl
+            style={{
+                marginTop: "3%",
+                alignSelf: "center",
+            }}
+            >
+            <InputLabel>
+                <b>Elegí el piso</b>
+            </InputLabel>
+            <Select
+                id="piso"
+                name="piso"
+                required
                 style={{
-                    marginTop: "3%",
-                    alignSelf: "center",
+                marginBottom: "15px",
+                minWidth: "150",
                 }}
-                >
-                <InputLabel>
-                    <b>Elegí la gerencia</b>
-                </InputLabel>
-                <Select
-                    id="gerencia"
-                    name="gerencia"
-                    style={{
-                    marginBottom: "15px",
-                    minWidth: "150",
-                    }}
-                    onChange={formik.handleChange}
-                    value={formik.values.gerencia}
-                >
-                    {gerencias &&
-                    gerencias.map((gerencia) => (
-                        <MenuItem
-                        style={{ fontSize: "11pt", fontFamily: "Roboto" }}
-                        >
-                            
-                        </MenuItem>
-                    ))}
-                </Select>
-                </FormControl>
+                onChange={(e) => {
+                  formik.handleChange(e);
+                  //setCupoPiso(e.target.value);
+                }}
+                value={formik.values.piso}
+            >
+                {pisos  &&
+                pisos.map((piso) => (
+                    <MenuItem
+                    style={{ fontSize: "11pt", fontFamily: "Armata" }}
+                    key={`piso_${piso.pID}`}
+                    value={piso.pID}
+                    >
+                        {piso.Nombre}
+                    </MenuItem>
 
-                <FormControl
-                style={{
-                    marginTop: "3%",
-                    alignSelf: "center",
-                }}
-                >
-                <InputLabel>
-                    <b>Elegí el colaborador</b>
-                </InputLabel>
-                <Select
-                    id="gerencia"
-                    name="gerencia"
-                    style={{
-                    marginBottom: "15px",
-                    minWidth: "150",
-                    }}
-                    onChange={formik.handleChange}
-                    value={formik.values.gerencia}
-                >
-                    {gerencias &&
-                    gerencias.map((gerencia) => (
-                        <MenuItem
-                        style={{ fontSize: "11pt", fontFamily: "Roboto" }}
-                        >
-                            
-                        </MenuItem>
-                    ))}
-                </Select>
-                </FormControl>
+                ))}
+            </Select>
+            </FormControl>
+            )}
 
-                <FormControl
+            {horariosVisible > 0  && (
+            <FormControl
                 style={{
-                    marginTop: "3%",
-                    alignSelf: "center",
+                  marginTop: "3%",
+                  alignSelf: "center",
                 }}
-                >
-                <InputLabel>
-                    <b>Elegí el sitio</b>
-                </InputLabel>
-                <Select
-                    id="gerencia"
-                    name="gerencia"
-                    style={{
-                    marginBottom: "15px",
-                    minWidth: "150",
-                    }}
-                    onChange={formik.handleChange}
-                    value={formik.values.gerencia}
-                >
-                    {gerencias &&
-                    gerencias.map((gerencia) => (
-                        <MenuItem
-                        style={{ fontSize: "11pt", fontFamily: "Roboto" }}
-                        >
-                            
-                        </MenuItem>
-                    ))}
-                </Select>
-                </FormControl>
-
-                <FormControl
-                style={{
-                    marginTop: "3%",
-                    alignSelf: "center",
-                }}
-                >
-                <InputLabel>
-                    <b>Elegí el piso</b>
-                </InputLabel>
-                <Select
-                    id="gerencia"
-                    name="gerencia"
-                    style={{
-                    marginBottom: "15px",
-                    minWidth: "150",
-                    }}
-                    onChange={formik.handleChange}
-                    value={formik.values.gerencia}
-                >
-                    {gerencias &&
-                    gerencias.map((gerencia) => (
-                        <MenuItem
-                        style={{ fontSize: "11pt", fontFamily: "Roboto" }}
-                        >
-                            
-                        </MenuItem>
-                    ))}
-                </Select>
-                </FormControl>
-
-                <FormControl
-                style={{
-                    marginTop: "3%",
-                    alignSelf: "center",
-                }}
-                >
+              >
                 <InputLabel>
                     <b>Elegí el horario</b>
                 </InputLabel>
                 <Select
-                    id="gerencia"
-                    name="gerencia"
+                    id="hora"
+                    name="hora"
+                    required
                     style={{
                     marginBottom: "15px",
                     minWidth: "150",
                     }}
-                    onChange={formik.handleChange}
-                    value={formik.values.gerencia}
+                    onChange={(e) => {
+                      formik.handleChange(e);
+                      //setCupoHorario(e.target.value);
+                    }}
+                    value={formik.values.hora}
                 >
-                    {gerencias &&
-                    gerencias.map((gerencia) => (
+                    {horarios &&
+                    horarios.map((hora) => (
                         <MenuItem
-                        style={{ fontSize: "11pt", fontFamily: "Roboto" }}
+                        style={{ fontSize: "11pt", fontFamily: "Armata" }}
+                        key={`hora_${hora.id}`}
+                        value={hora.id}
                         >
-                            
+                          {hora.horario}
                         </MenuItem>
                     ))}
                 </Select>
-                </FormControl>
+            </FormControl>
+            )}
+            <div style={{ marginTop: "3%", alignSelf: "center" }}>  
+              <Button
+              style={{ alignSelf: "center" ,textTransform: "none", textAlign: "center", backgroundColor: "#0F1150", color: "white" }}
+              variant="contained"
+              type= 'submit'>Confirmar</Button>  
 
-            </form>
-        </Container>
+            </div>   
+          </form>
+          </Container>
         </div>
+        <br/>
       </div>
-    );
+      );
   }
 
 export default Reporte;

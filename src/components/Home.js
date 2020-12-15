@@ -1,5 +1,5 @@
 import React from 'react';
-import Sidebar from './Sidebar';
+import Sidebar from './Sidebar2';
 import '../utils/App.css';
 import Header from '../shared/Header'
 import { Container, Checkbox, FormControl, FormGroup, FormControlLabel, FormHelperText } from "@material-ui/core";
@@ -25,6 +25,11 @@ const Home = (props) => {
         <br/>
         <br/>
         Hacemos todo lo posible por mantener las maximas medidas de seguridad, les deseamos un buen reencuentro con sus compañeros!
+        <br/>
+        <br/>
+        <a href="/Reserva">
+        Reservar nuevo turno
+        </a>
       </div>
       </Container>
       
