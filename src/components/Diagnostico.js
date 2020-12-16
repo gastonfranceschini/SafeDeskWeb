@@ -32,16 +32,16 @@ const Diagnostico = (props) => {
   const classes = useStyles();
 
   
-  const TEMPERATURA = "TurnosActivo";
-  const GUSTO = "DiagnosticosActivo";
-  const CONTACTO = "TurnosActivo";
-  const EMBARAZADA = "DiagnosticosActivo";
-  const CANCER = "TurnosActivo";
-  const DIABETES = "DiagnosticosActivo";
-  const HEPATICA = "TurnosActivo";
-  const OLFATO = "DiagnosticosActivo";
-  const GARGANTA = "TurnosActivo";
-  const RESPIRATORIA = "DiagnosticosActivo";
+  const TEMPERATURA = "temperatura";
+  const GUSTO = "gusto";
+  const CONTACTO = "contacto";
+  const EMBARAZADA = "embarazada";
+  const CANCER = "cancer";
+  const DIABETES = "diabetes";
+  const HEPATICA = "hepatica";
+  const OLFATO = "olfato";
+  const GARGANTA = "garganta";
+  const RESPIRATORIA = "respiratoria";
 
   const [done, setDone] = useState(false);
 
