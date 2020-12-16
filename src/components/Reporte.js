@@ -37,6 +37,7 @@ const isWeekday = (date) => {
   const [pisos, setPisos] = useState([]);
   const [horarios, setHorarios] = useState([]);
   const [fechaSel, setFechaSel] = useState();
+  const [repoSel, setRepoSel] = useState();
   const alert = useAlert();
   const [done, setDone] = useState(false);
 
@@ -49,17 +50,35 @@ const isWeekday = (date) => {
 
   async function cargarGerencias() {
     const res = await getGerencias();
-    setGerencias(res.data);
+    const defaultTodos = [{ id : null, Nombre: 'TODOS'}]
+    Array.prototype.push.apply(defaultTodos, res.data);
+
+    if (gerenciasVisible == 1 ) 
+      setGerencias(defaultTodos);
+    else
+      setGerencias(res.data);
   }
 
   async function cargarUsuarios() {
     const res = await getUsuariosDependientes();
-    setUsuarios(res.data);
+    const defaultTodos = [{ dni : null, nombre: 'TODOS'}]
+    Array.prototype.push.apply(defaultTodos, res.data);
+
+    if (usuariosVisible == 1 ) 
+      setUsuarios(defaultTodos);
+    else
+      setUsuarios(res.data);
   }
 
   async function cargarEdificios() {
     const res = await getEdificios("2099-1-1");
-    setEdificios(res.data);
+    const defaultTodos = [{ eID : null, Nombre: 'TODOS', Direccion: '' }]
+    Array.prototype.push.apply(defaultTodos, res.data);
+    //?
+    if (edificiosVisible == 1 ) 
+      setEdificios(defaultTodos);
+    else
+      setEdificios(res.data);
   }
 
   async function cargarReportes() {
@@ -77,6 +96,7 @@ const isWeekday = (date) => {
         setHorariosVisible(reporte.SelHorario);
         setPisosVisible(reporte.SelPiso);
         setFechaVisible(reporte.SelFecha);
+        setRepoSel(reporte.Nombre);
       }
     })
   };
@@ -122,7 +142,7 @@ const isWeekday = (date) => {
     if (compActivo == 1)
     {
         campos.push(valorBack);
-        valores.push(compValor);
+        valores.push(compValor == "" ? null : compValor);
     }
     else if (compActivo == 2)
     {
@@ -132,15 +152,20 @@ const isWeekday = (date) => {
         return false;
       }
       campos.push(valorBack);
-      valores.push(compValor);
+      valores.push(compValor == "" ? null : compValor);
     }
     return true;
   }
 
   function downloadFile(absoluteUrl) {
+
+    /*const fechaAux = formatISO(new Date(), {
+      representation: "date",
+    });*/
+
     var link = document.createElement('a');
     link.href = absoluteUrl;
-    link.download = 'NuevoReporte.CSV';
+    link.download = 'Rep-'+ repoSel +'.CSV';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -152,17 +177,17 @@ const isWeekday = (date) => {
     valores = [];
 
     if (!validarYAgregar("gerencia",idGerencia,gerenciasVisible)) {return;};
-    validarYAgregar("usuario",idUsuario,usuariosVisible);
-    validarYAgregar("edificio",IdEdificio,edificiosVisible);
-    validarYAgregar("piso",IdPiso,pisosVisible);
-    validarYAgregar("horario",idHorarioEntrada,horariosVisible);
-    validarYAgregar("fecha",FechaTurno,fechaVisible);
+    if (!validarYAgregar("usuario",idUsuario,usuariosVisible)) {return;};
+    if (!validarYAgregar("edificio",IdEdificio,edificiosVisible)) {return;};
+    if (!validarYAgregar("piso",IdPiso,pisosVisible)) {return;};
+    if (!validarYAgregar("horario",idHorarioEntrada,horariosVisible)) {return;};
+    if (!validarYAgregar("fecha",FechaTurno,fechaVisible)) {return;};
 
-    alert.show("campos " + campos + "valores " + valores);
+    //alert.show("campos " + campos + "valores " + valores);
 
     getReporteDinamico(idReporte,campos, valores, false)
     .then(response => {
-      //<a href="data:application/octet-stream,DATA" download="FILENAME">TITLE</a>
+      //Generacion de link <a href="data:application/octet-stream,DATA" download="FILENAME">TITLE</a>
       downloadFile("data:application/octet-stream," + response.data);
     }).catch(function(error) {
         if (error.response == undefined)
@@ -173,31 +198,60 @@ const isWeekday = (date) => {
 };
 
   async function handleDateChange(date) {
-    resetValues();
+    //resetValues();
     const fechaAux = formatISO(new Date(`${date}`), {
       representation: "date",
     });
     setFechaSel(fechaAux);
   }
 
+  async function cargarPisos(idEdificio) {
+    const res = await getPisos(idEdificio,"2099-1-1");
+    const defaultTodos = [{ pID : null, Nombre: 'TODOS'}]
+    Array.prototype.push.apply(defaultTodos, res.data);
+
+    if (pisosVisible == 1 ) 
+      setPisos(defaultTodos);
+    else
+      setPisos(res.data);
+
+  }
+
+  async function cargarHorarios(idEdificio) {
+  
+      const res = await getHoras(idEdificio,"2099-1-1");
+      const defaultTodos = [{ id : null, horario: 'TODOS'}]
+      Array.prototype.push.apply(defaultTodos, res.data);
+  
+      if (horariosVisible == 1 ) 
+        setHorarios(defaultTodos);
+      else
+        setHorarios(res.data);
+    }
+
   async function handleEdificiosChange(idEdificio) {
     if (idEdificio)
     {
-      const res = await getPisos(idEdificio,"2099-1-1");
-      setPisos(res.data);
-      const res2 = await getHoras(idEdificio,"2099-1-1");
-      setHorarios(res2.data);
+      await cargarPisos(idEdificio)
+      await cargarHorarios(idEdificio)
+    }
+  }
+
+  async function handleGerenciasChange(idGerencia) {
+    if (idGerencia)
+    {
+     // await cargarPisos(idGerencia)
     }
   }
 
   async function handleReporteChange(idReporte) {
     if (idReporte)
     {
+      resetValues();
       await cargarGerencias();
       await cargarUsuarios();
       await cargarEdificios();
       configBotonesActivos(idReporte);
-      resetValues();
     }
   }
 
@@ -285,8 +339,8 @@ const isWeekday = (date) => {
                   onChange={(date) => handleDateChange(date)}
                   dateFormat="MMMM d, yyyy"
                   filterDate={isWeekday}
-                  minDate={setMinutes(addDays(new Date(), 1), 30)}
-                  maxDate={setMinutes(addDays(new Date(), 30), 30)}
+                  minDate={setMinutes(addDays(new Date(), -360), 30)}
+                  maxDate={setMinutes(addDays(new Date(), 360), 30)}
                   showDisabledMonthNavigation
                   inline={formik.values.sucursalId !== ""}
                   excludeDates={populateFeriados(feriados)}
@@ -308,7 +362,7 @@ const isWeekday = (date) => {
           <Select
               id="gerencia"
               name="gerencia"
-              required
+              required={gerenciasVisible == 2}
               style={{
               marginBottom: "15px",
               minWidth: "50",
@@ -316,7 +370,7 @@ const isWeekday = (date) => {
               value={formik.values.gerencia}
               onChange={(e) => {
                 formik.handleChange(e);
-                //handleEdificiosChange(e.target.value);
+                handleGerenciasChange(e.target.value);
               }}
           >
               {gerencias &&
@@ -346,7 +400,7 @@ const isWeekday = (date) => {
               <Select
                   id="usuario"
                   name="usuario"
-                  required
+                  required={usuariosVisible == 2}
                   style={{
                   marginBottom: "15px",
                   minWidth: "150",
@@ -382,7 +436,7 @@ const isWeekday = (date) => {
               <Select
                   id="edificio"
                   name="edificio"
-                  required
+                  required={edificiosVisible == 2}
                   style={{
                   marginBottom: "15px",
                   minWidth: "50",
@@ -420,7 +474,7 @@ const isWeekday = (date) => {
             <Select
                 id="piso"
                 name="piso"
-                required
+                required={pisosVisible == 2}
                 style={{
                 marginBottom: "15px",
                 minWidth: "150",
@@ -459,7 +513,7 @@ const isWeekday = (date) => {
                 <Select
                     id="hora"
                     name="hora"
-                    required
+                    required={horariosVisible == 2}
                     style={{
                     marginBottom: "15px",
                     minWidth: "150",
