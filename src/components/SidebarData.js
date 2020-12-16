@@ -62,31 +62,32 @@ const btnCerrarSesion =  {
 export const SidebarData = (autoDiagnostico,reservarTurno) => {
     const menu = []
     const idTipoUsuario = getUser().IdTipoDeUsuario;
+    
     switch (idTipoUsuario) {
         case OPERADOR:
-            if (autoDiagnostico) menu.push(btnAutoDiagnostico);
-            if (reservarTurno) menu.push(btnReservar);
+            if (autoDiagnostico == 1) menu.push(btnAutoDiagnostico);
+            if (reservarTurno == 1) menu.push(btnReservar);
             menu.push(btnMisReservas);
             menu.push(btnCerrarSesion);
           break;
         case SUPERVISOR || GERENTE:
-            if (autoDiagnostico) menu.push(btnAutoDiagnostico);
-            if (reservarTurno) menu.push(btnReservar);
+            if (autoDiagnostico == 1) menu.push(btnAutoDiagnostico);
+            if (reservarTurno == 1) menu.push(btnReservar);
             menu.push(btnMisReservas);
             menu.push(btnReportes);
             menu.push(btnCerrarSesion);
           break;
         case ADMINISTRADOR:
-            if (autoDiagnostico) menu.push(btnAutoDiagnostico);
-            if (reservarTurno) menu.push(btnReservar);
+            if (autoDiagnostico == 1) menu.push(btnAutoDiagnostico);
+            if (reservarTurno == 1) menu.push(btnReservar);
             menu.push(btnMisReservas);
             menu.push(btnReportes);
             menu.push(btnAdministracion);
             menu.push(btnCerrarSesion);
           break;
         case SEGURIDAD:
-            if (autoDiagnostico) menu.push(btnAutoDiagnostico);
-            if (reservarTurno) menu.push(btnReservar);
+            if (autoDiagnostico == 1) menu.push(btnAutoDiagnostico);
+            if (reservarTurno == 1) menu.push(btnReservar);
             menu.push(btnMisReservas);
             menu.push(btnReportes);
             menu.push(btnCerrarSesion);

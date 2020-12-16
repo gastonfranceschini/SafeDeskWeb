@@ -19,12 +19,19 @@ const MisReservas = (prop) => {
   }, []);
   
 
+  function getParsedDate(date){ 
+    date = String(date).split(' '); 
+    var days = String(date[0]).split('-'); 
+    //var hours = String(date[1]).split(':'); 
+    return [parseInt(days[2]) + '/' + parseInt(days[1]) + '/' + parseInt(days[0])]; 
+  } 
+
   const getTurnosHistorico = () => {
     TurnosAPI.getTurnosHistoricos()
     .then(response => {
       var result = [];
       for(var i in response.data)
-          result.push("Fecha: " + response.data[i].FechaTurno.substr(0,10) + " Sitio: " + response.data[i].Edificio + " " + response.data[i].Piso + ", Horario: " + response.data[i].Horario);
+          result.push("Fecha: " + getParsedDate(response.data[i].FechaTurno.substr(0,10)) + " Sitio: " + response.data[i].Edificio + " " + response.data[i].Piso + ", Horario: " + response.data[i].Horario);
 
           setTurnosHistoricos(result);
     })          
@@ -41,7 +48,7 @@ const MisReservas = (prop) => {
     .then(response => {
       var result = [];
       for(var i in response.data)
-          result.push("Fecha: " + response.data[i].FechaTurno.substr(0,10) + " Sitio: " + response.data[i].Edificio + " " + response.data[i].Piso + ", Horario: " + response.data[i].Horario);
+          result.push("Fecha: " + getParsedDate(response.data[i].FechaTurno.substr(0,10)) + " Sitio: " + response.data[i].Edificio + " " + response.data[i].Piso + ", Horario: " + response.data[i].Horario);
 
       setTurnosActivos(result);
     })          

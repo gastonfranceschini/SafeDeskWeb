@@ -25,12 +25,14 @@ function Navbar() {
   }, []);
   
   const setConfig = (nombreConfig,valorConfig) => {
+    //alert.show(nombreConfig + valorConfig);
 
     switch (nombreConfig) {
       case CONFIG_TURNOS:
         setTurnosActivo(valorConfig);
         break;
       case CONFIG_DIAGNOSTICOS:
+        
         setDiagnosticosActivo(valorConfig);
         break;
     }

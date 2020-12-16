@@ -6,10 +6,50 @@ import { useFormik } from "formik";
 import * as Api from '../apis/ReportesAPI';
 import Header from '../shared/Header';
 import Sidebar from './Sidebar2';
+import * as ReportesAPI from "../apis/ReportesAPI";
 
 import { useAlert } from 'react-alert';
 
 const Administracion = (props) => {
+
+  const CONFIG_TURNOS = "TurnosActivo";
+  const CONFIG_DIAGNOSTICOS = "DiagnosticosActivo";
+
+  const [turnosActivo, setTurnosActivo] = useState(true)
+  const [diagnosticosActivo, setDiagnosticosActivo] = useState(true)
+
+  useEffect(() => {
+      getConfig(CONFIG_TURNOS);
+      getConfig(CONFIG_DIAGNOSTICOS);
+      
+  }, []);
+  
+  const setConfig = (nombreConfig,valorConfig) => {
+
+    switch (nombreConfig) {
+      case CONFIG_TURNOS:
+        setTurnosActivo(valorConfig);
+        break;
+      case CONFIG_DIAGNOSTICOS:
+        setDiagnosticosActivo(valorConfig);
+        break;
+    }
+  }
+
+  const getConfig = (nombreConfig) => {
+
+    ReportesAPI.getConfig(nombreConfig)
+    .then(response => {
+      setConfig(nombreConfig,response.data.valor == 1 ? true : false)
+    })          
+    .catch(function(error) {
+      if (error.response == undefined)
+        alert.show("" + error);
+      else
+        alert.show("" + error.response.data.error);
+    });
+  };
+
 
   const useStyles = makeStyles(theme => ({
     root: {
@@ -20,27 +60,19 @@ const Administracion = (props) => {
     },
   }));
   const alert = useAlert();
-  const CONFIG_TURNOS = "TurnosActivo";
-  const CONFIG_DIAGNOSTICOS = "DiagnosticosActivo";
+
   const [done, setDone] = useState(false);
   const classes = useStyles();
-  const [check, setCheck] = useState({
-    reservaTurno: true,
-    autoDiagnostico: true,
-  });
 
-  const handleChange = name => event => {
-      setCheck({ ...check, [name]: event.target.checked });
+  const handleChange = name => event => {  
+      setConfig(name,event.target.checked)
     };
-
-  const {reservaTurno, autoDiagnostico } = check;
-  const error = [reservaTurno, autoDiagnostico].filter(v => v).length !== 2;
 
   const guardarConfig = (configNombre,configValor) => {
 
     Api.setConfig(configNombre,configValor ? 1 : 0)
         .then(response => {
-          alert.show("Configurado Correctamente!");
+          alert.show("Configurado " + configNombre + " correctamente!");
           setDone(true);
         })          
             .catch(function(error) {
@@ -58,8 +90,8 @@ const Administracion = (props) => {
     },
     onSubmit: (values) => {
       const { reservaTurno,autoDiagnostico } = values;
-      guardarConfig(CONFIG_DIAGNOSTICOS,autoDiagnostico);
-      guardarConfig(CONFIG_TURNOS,reservaTurno,);
+      guardarConfig(CONFIG_DIAGNOSTICOS,diagnosticosActivo);
+      guardarConfig(CONFIG_TURNOS,turnosActivo);
     },
   });
 
@@ -82,13 +114,13 @@ const Administracion = (props) => {
               <FormControl component="fieldset" className={classes.formControl}>
                 <FormGroup>
                   <FormControlLabel
-                    control={<Checkbox checked={reservaTurno} onChange={handleChange('reservaTurno')} value="reservaTurno" />}
+                    control={<Checkbox checked={turnosActivo} onChange={handleChange(CONFIG_TURNOS)} value="reservaTurno" />}
                     label="Habilitar reserva de turnos"
                   />
                 </FormGroup>
                 <FormGroup>
                   <FormControlLabel
-                    control={<Checkbox checked={autoDiagnostico} onChange={handleChange('autoDiagnostico')} value="autoDiagnostico" />}
+                    control={<Checkbox checked={diagnosticosActivo} onChange={handleChange(CONFIG_DIAGNOSTICOS)} value="autoDiagnostico" />}
                     label="Habilitar Autodiagnostico"
                   />
                   </FormGroup>
