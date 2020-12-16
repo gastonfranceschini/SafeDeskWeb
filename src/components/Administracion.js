@@ -58,6 +58,13 @@ const Administracion = (props) => {
     formControl: {
       margin: theme.spacing(3),
     },
+    btn:{
+      alignSelf: "center" ,
+      textTransform: "none", 
+      textAlign: 'center', 
+      backgroundColor: "#0F1150", 
+      color: "white"
+    }
   }));
   const alert = useAlert();
 
@@ -126,7 +133,7 @@ const Administracion = (props) => {
                   </FormGroup>
                    </FormControl>
               <Button
-                style={{ alignSelf: "center" ,textTransform: "none"}}
+                className={classes.btn}
                 variant="contained"
                 type= 'submit'>Guardar cambios</Button>
             </form>

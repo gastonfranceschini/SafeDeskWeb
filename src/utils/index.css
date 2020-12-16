@@ -9,9 +9,9 @@ body {
   background-color:lightblue /*this your primary color*/
 }
 
-button {
-  background-color: "#0F1150";
-  color: "white"
+.btn {
+  background: #eb94d0;
+
 }
 
 code {

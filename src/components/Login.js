@@ -36,6 +36,13 @@ const Login = () => {
     textField: {
       marginTop: theme.spacing(6),
     },
+    btn:{
+      alignSelf: "center" ,
+      textTransform: "none", 
+      textAlign: 'center', 
+      backgroundColor: "#0F1150", 
+      color: "white"
+    }
   }));
   const classes = useStyles();
 
@@ -127,7 +134,7 @@ const Login = () => {
               />
             </FormControl>
             <Button
-              style={{ alignSelf: "center" ,textTransform: "none"}}
+              className={classes.btn}
               variant="contained"
               type= 'submit'>Ingresar</Button>
             <Link to="/vales" style={{ textDecoration: "none",alignSelf: "center" }}>
