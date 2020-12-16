@@ -7,6 +7,7 @@ import Sidebar from "./Sidebar2"
 import { FixedSizeList as List } from 'react-window';
 import { useAlert } from 'react-alert';
 import TodayIcon from '@material-ui/icons/Today';
+import Divider from "@material-ui/core/Divider";
 
 
 const MisReservas = (prop) => {
@@ -26,7 +27,7 @@ const MisReservas = (prop) => {
     .then(response => {
       var result = [];
       for(var i in response.data)
-          result.push("Fecha: " + response.data[i].FechaTurno.substr(0,10) + " Sitio: " + response.data[i].Edificio + " " + response.data[i].Piso + ", Horario: " + response.data[i].Horario);
+          result.push(`\u2B24` + " Fecha: " + response.data[i].FechaTurno.substr(0,10) + " Sitio: " + response.data[i].Edificio + " " + response.data[i].Piso + ", Horario: " + response.data[i].Horario);
 
           setTurnosHistoricos(result);
     })          
@@ -43,7 +44,7 @@ const MisReservas = (prop) => {
     .then(response => {
       var result = [];
       for(var i in response.data)
-          result.push("Fecha: " + response.data[i].FechaTurno.substr(0,10) + " Sitio: " + response.data[i].Edificio + " " + response.data[i].Piso + ", Horario: " + response.data[i].Horario);
+          result.push(`\u2B24` + " Fecha: " + response.data[i].FechaTurno.substr(0,10) + " Sitio: " + response.data[i].Edificio + " " + response.data[i].Piso + ", Horario: " + response.data[i].Horario);
 
       setTurnosActivos(result);
     })          
@@ -58,12 +59,14 @@ const MisReservas = (prop) => {
   const RowA = ({ index, style }) => (
     <div style={style}>
       {turnosActivos[index]}
+      <Divider />
     </div>
   );
 
   const RowH = ({ index, style }) => (
     <div style={style}>
       {turnosHistoricos[index]}
+      <Divider />
     </div>
   );
    
