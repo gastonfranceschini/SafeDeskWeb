@@ -9,6 +9,7 @@ import Reserva from './components/Reserva';
 import MisReservas from './components/MisReservas';
 import Diagnostico from './components/Diagnostico';
 import Perfil from './components/Perfil';
+import Contrasena from './components/Contraseña';
 
 import './utils/App.css';
 
@@ -25,6 +26,7 @@ class App extends Component {
           <Route exact path="/Administracion" component={Administracion} /> 
           <Route exact path="/Reporte" component={Reporte} />
           <Route exact path="/Perfil" component={Perfil} />
+          <Route exact path="/Contrasena" component={Contrasena} />
         </Switch>
       </Router>
     );

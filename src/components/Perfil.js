@@ -5,8 +5,12 @@ import { useAlert } from 'react-alert';
 import Button from "@material-ui/core/Button";
 import { getUser } from '../utils/auth-helper';
 import Paper from '@material-ui/core/Paper';
+import { withRouter, Link, Redirect } from "react-router-dom";
 
 const Perfil = () => {
+
+    const [done, setDone] = useState(false);
+
 
   return (
     <div>
@@ -38,10 +42,12 @@ const Perfil = () => {
                 <div>
                     <p className='txtTit'>Contrasena</p>
                     <Button
-                    style={{ marginTop: "5pt", alignSelf: "left" ,textTransform: "none"}}
+                    style={{ marginTop: "5pt", alignSelf: "left" ,textTransform: "none", backgroundColor: "#0F1150", color: "white" }}
                     variant="contained"
+                    onClick={setDone(true)}
                     type= 'submit'>Cambiar</Button>
                 </div>
+                { done ? <Redirect to="/Contrasena"/> : null }
             </Paper>
         </div>
     </div>
