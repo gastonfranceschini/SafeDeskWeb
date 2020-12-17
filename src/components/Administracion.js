@@ -26,6 +26,7 @@ const Administracion = (props) => {
   
   const setConfig = (nombreConfig,valorConfig) => {
 
+    
     switch (nombreConfig) {
       case CONFIG_TURNOS:
         setTurnosActivo(valorConfig);
@@ -58,13 +59,6 @@ const Administracion = (props) => {
     formControl: {
       margin: theme.spacing(3),
     },
-    btn:{
-      alignSelf: "center" ,
-      textTransform: "none", 
-      textAlign: 'center', 
-      backgroundColor: "#0F1150", 
-      color: "white"
-    }
   }));
   const alert = useAlert();
 
@@ -133,7 +127,7 @@ const Administracion = (props) => {
                   </FormGroup>
                    </FormControl>
               <Button
-                className={classes.btn}
+                style={{ alignSelf: "center" ,textTransform: "none"}}
                 variant="contained"
                 type= 'submit'>Guardar cambios</Button>
             </form>
