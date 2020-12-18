@@ -67,10 +67,14 @@ function Navbar() {
       <IconContext.Provider value={{ color: '#fff' }}>
         
         <div className='navbar'>
-          <Link to='#' className='menu-bars'>
-            <FaIcons.FaBars onClick={showSidebar}/>
-          </Link>
-          <b className='txtmenu'>Menu</b>
+          <b className='txtmenu'>
+            <Link to='#' className='menu-bars'>
+              <FaIcons.FaBars onClick={showSidebar}/>
+            </Link>
+            <div className="menuName">
+              Menu
+            </div>
+          </b>
           <b className='textUser' onClick={()=>{window.location.pathname = '/Perfil';}}>
             <div style={{textAlign: 'right'}}>
               {getUser().Nombre}

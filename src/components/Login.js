@@ -90,7 +90,7 @@ const Login = () => {
   return (
     <div>
       <Header />
-      <div>
+      <div className="loginBox">
         <Container maxWidth="sm">
           <h1 className='ExpertaText' style={{ fontSize : "50px" }}>SAFE DESK</h1>
           <p>Para comenzar ingresá tu DNI y contraseña.</p>

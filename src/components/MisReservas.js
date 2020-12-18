@@ -6,6 +6,9 @@ import Header from "../shared/Header"
 import Sidebar from "./Sidebar2"
 import { FixedSizeList as List } from 'react-window';
 import { useAlert } from 'react-alert';
+import TodayIcon from '@material-ui/icons/Today';
+import Divider from "@material-ui/core/Divider";
+
 
 const MisReservas = (prop) => {
 
@@ -63,12 +66,14 @@ const MisReservas = (prop) => {
   const RowA = ({ index, style }) => (
     <div style={style}>
       {turnosActivos[index]}
+      <Divider />
     </div>
   );
 
   const RowH = ({ index, style }) => (
     <div style={style}>
       {turnosHistoricos[index]}
+      <Divider />
     </div>
   );
    
@@ -101,12 +106,16 @@ const MisReservas = (prop) => {
         <div>
           <Container maxWidth="sm">
             <br/>
-            <h1 className='ExpertaText'>Mis Reservas</h1>
+            <h1 className='ExpertaText' style={{marginTop:50, marginBottom:50}}>Mis Reservas</h1>
+            
+            <TodayIcon/>
             <p className='HomeDescr'>Reservas Activas</p>
-            <ListaTurnosActivos />
-            <br/>
-            <br/>
-            <p className='HomeDescr'>Reservas Historicas</p>
+      
+            <ListaTurnosActivos/>
+           
+            <TodayIcon/>
+            <p className='HomeDescr' style={{marginTop:50, marginBottom:50}}>Reservas Historicas</p>
+            
             <ListaTurnosHistoricos/>
             <br/>
           </Container>
