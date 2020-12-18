@@ -124,7 +124,7 @@ const Login = () => {
                 className={classes.textField}
                 style={{ marginBottom: "2%" }}
                 placeholder="Ingresá la contraseña"
-                 type="password"
+                type="password"
                 //disabled={true}
                 id="password"
                 name="password"
@@ -137,8 +137,6 @@ const Login = () => {
               className={classes.btn}
               variant="contained"
               type= 'submit'>Ingresar</Button>
-            <Link to="/vales" style={{ textDecoration: "none",alignSelf: "center" }}>
-            </Link>
             <br/>
           </form>
         </Container>
