@@ -9,8 +9,9 @@ import { withRouter, Link, Redirect } from "react-router-dom";
 
 const Perfil = () => {
 
-    const [done, setDone] = useState(false);
-
+    const goChange = () => {
+        window.location.replace("/Contrasena");
+    }
 
   return (
     <div>
@@ -44,10 +45,9 @@ const Perfil = () => {
                     <Button
                     style={{ marginTop: "5pt", alignSelf: "left" ,textTransform: "none", backgroundColor: "#0F1150", color: "white" }}
                     variant="contained"
-                    onClick={setDone(true)}
-                    type= 'submit'>Cambiar</Button>
+                    onClick={goChange}
+                    >Cambiar</Button>
                 </div>
-                { done ? <Redirect to="/Contrasena"/> : null }
             </Paper>
         </div>
     </div>

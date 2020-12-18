@@ -9,12 +9,10 @@ body {
   background-color:lightblue /*this your primary color*/
 }
 
-.btn {
-  background: #eb94d0;
-
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.MuiPaper-rounded {
+  border-radius: 0 !important;
 }

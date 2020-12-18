@@ -102,3 +102,7 @@ body {
   font-size: large;
   margin-top: 5pt;
 }
+
+.loginBox{
+  padding-top: 5vh;
+}

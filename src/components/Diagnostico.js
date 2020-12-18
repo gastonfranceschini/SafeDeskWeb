@@ -28,10 +28,8 @@ const Diagnostico = (props) => {
       color: "white"
     }
   }));
-
   const classes = useStyles();
 
-  
   const TEMPERATURA = "temperatura";
   const GUSTO = "gusto";
   const CONTACTO = "contacto";
