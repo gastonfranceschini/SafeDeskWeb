@@ -5,6 +5,7 @@
   "dependencies": {
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.11.2",
+    "@sweetalert/with-react": "^0.1.1",
     "@testing-library/jest-dom": "^5.11.6",
     "@testing-library/react": "^11.2.2",
     "@testing-library/user-event": "^12.2.2",
@@ -13,6 +14,7 @@
     "fontsource-armata": "^3.0.9",
     "formik": "^2.2.1",
     "generate-download-link": "^1.0.1",
+    "qrcode.react": "^1.0.0",
     "react": "^17.0.1",
     "react-alert": "^7.0.2",
     "react-alert-template-basic": "^1.0.0",

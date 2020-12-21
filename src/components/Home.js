@@ -23,9 +23,9 @@ const Home = (props) => {
         animation: true,
       })
       .then((result) => {
-        if (result.value) { 
+        //if (result.value) { 
           window.location.replace("/Contrasena");
-        }
+        //}
       });
     }
     

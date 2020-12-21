@@ -9,14 +9,21 @@ import { useAlert } from 'react-alert';
 import TodayIcon from '@material-ui/icons/Today';
 import Divider from "@material-ui/core/Divider";
 import ReactLoading from 'react-loading';
+//import swal from "sweetalert2";
+import Button from "@material-ui/core/Button";
+import swal from '@sweetalert/with-react'
 
 
 const MisReservas = (prop) => {
+
+  var QRCode = require('qrcode.react');
 
   const alert = useAlert();
   const [turnosActivos, setTurnosActivos] = useState([])
   const [turnosHistoricos, setTurnosHistoricos] = useState([])
   const [loading, setLoading] = useState(true)
+
+  const [turnoActivo, setTurnoActivo] = useState(0)
 
   useEffect(() => {
     setLoading(true);
@@ -32,14 +39,24 @@ const MisReservas = (prop) => {
     return [parseInt(days[2]) + '/' + parseInt(days[1]) + '/' + parseInt(days[0])]; 
   } 
 
+  function getCurrentDate(separator=''){
+
+    let newDate = new Date()
+    let date = newDate.getDate();
+    let month = newDate.getMonth() + 1;
+    let year = newDate.getFullYear();
+    
+    return `${year}${separator}${month<10?`0${month}`:`${month}`}${separator}${date}`
+    }
+
   const getTurnosHistorico = () => {
     TurnosAPI.getTurnosHistoricos()
     .then(response => {
       var result = [];
       for(var i in response.data)
           result.push("Fecha: " + getParsedDate(response.data[i].FechaTurno.substr(0,10)) + " Sitio: " + response.data[i].Edificio + " " + response.data[i].Piso + ", Horario: " + response.data[i].Horario);
-          setLoading(false);
-          setTurnosHistoricos(result);
+      setLoading(false);
+      setTurnosHistoricos(result);
     })          
     .catch(function(error) {
       if (error.response == undefined)
@@ -49,13 +66,49 @@ const MisReservas = (prop) => {
     });
   };
 
+  const clickQR = () => {
+    
+   if (turnoActivo == 0)
+   {
+    swal(
+      <div>
+        <h1>El QR no se pudo generar...</h1>
+        <br></br>
+        No se encontraron turnos para el dia de hoy...
+      </div>
+    )
+  }
+  else
+  {
+    swal(
+      <div>
+        <h1>QR generado!</h1>
+        <br/>
+        <h3>{turnosActivos[0]}</h3>
+        <br/>
+        <p>
+        <QRCode value={turnoActivo} />
+        </p>
+      </div>
+    )
+  }
+
+  };
+
   const getTurnosActivos = () => {
     TurnosAPI.getTurnos()
     .then(response => {
       var result = [];
       for(var i in response.data)
-          result.push("Fecha: " + getParsedDate(response.data[i].FechaTurno.substr(0,10)) + " Sitio: " + response.data[i].Edificio + " " + response.data[i].Piso + ", Horario: " + response.data[i].Horario);
-          setLoading(false);
+      {
+        if (i == 0 && response.data[i].FechaTurno.substr(0,10) == getCurrentDate('-'))
+        {
+          setTurnoActivo(response.data[i].TurnoId);
+        }
+
+        result.push("Fecha: " + getParsedDate(response.data[i].FechaTurno.substr(0,10)) + " Sitio: " + response.data[i].Edificio + " " + response.data[i].Piso + ", Horario: " + response.data[i].Horario);
+      }
+      setLoading(false);
       setTurnosActivos(result);
     })          
     .catch(function(error) {
@@ -68,14 +121,22 @@ const MisReservas = (prop) => {
 
   const RowA = ({ index, style }) => (
     <div style={style}>
-      {turnosActivos[index]}
+      
+      <Button>
+      <TodayIcon style={{color:"rgb(34, 87, 138)" ,height:'20px', width:'20px', marginRight : '10px'}}/>
+        {turnosActivos[index]}
+      </Button>
+      
       <Divider />
     </div>
   );
 
   const RowH = ({ index, style }) => (
     <div style={style}>
+      <Button >
+      <TodayIcon style={{color:"rgb(134, 87, 80)" ,height:'20px', width:'20px', marginRight : '10px'}}/>
       {turnosHistoricos[index]}
+      </Button>
       <Divider />
     </div>
   );
@@ -87,7 +148,7 @@ const MisReservas = (prop) => {
       height={200}
       width={550}
       itemSize={35}
-      itemCount={turnosActivos.length}> 
+      itemCount={turnosActivos.length} > 
       {RowA}
     </List>
   );
@@ -114,17 +175,20 @@ const MisReservas = (prop) => {
       ) : ( 
         <div>
           <Container maxWidth="sm">
+          
             <br/>
-            <h1 className='ExpertaText' style={{marginTop:50, marginBottom:50}}>Mis Reservas</h1>
-            
-            <TodayIcon/>
-            <p className='HomeDescr'>Reservas Activas</p>
-      
+            <h1 className='ExpertaText' style={{marginTop:0, marginBottom:20}}>Mis Reservas</h1>
+
+
+            <Button
+              style={{ alignSelf: "center" ,textTransform: "none", textAlign: "center", backgroundColor: "#0F1150", color: "white" }}
+              variant="contained"
+              type= 'submit' onClick={clickQR}>Generar QR de ingreso</Button>  
+
+        
+            <p className='HomeDescr' style={{marginTop:25, marginBottom:25}}>Reservas Activas</p>
             <ListaTurnosActivos/>
-           
-            <TodayIcon/>
-            <p className='HomeDescr' style={{marginTop:50, marginBottom:50}}>Reservas Historicas</p>
-            
+            <p className='HomeDescr' style={{marginTop:25, marginBottom:25}}>Reservas Historicas</p>
             <ListaTurnosHistoricos/>
             <br/>
           </Container>
