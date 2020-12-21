@@ -8,6 +8,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import { setMinutes, getDay, addDays, formatISO } from "date-fns";
 import { useFormik } from "formik";
 import { useAlert } from 'react-alert';
+import ReactLoading from 'react-loading';
+
 import {
     MenuItem,
     Select,
@@ -47,6 +49,7 @@ const isWeekday = (date) => {
   const [gerenciasVisible, setGerenciasVisible] = useState(0);
   const [pisosVisible, setPisosVisible] = useState(0);
   const [horariosVisible, setHorariosVisible] = useState(0);
+  const [loading, setLoading] = useState(true);
 
   async function cargarGerencias() {
     const res = await getGerencias();
@@ -57,6 +60,7 @@ const isWeekday = (date) => {
       setGerencias(defaultTodos);
     else
       setGerencias(res.data);
+      setLoading(false);
   }
 
   async function cargarUsuarios() {
@@ -68,6 +72,7 @@ const isWeekday = (date) => {
       setUsuarios(defaultTodos);
     else
       setUsuarios(res.data);
+      setLoading(false);
   }
 
   async function cargarEdificios() {
@@ -79,11 +84,13 @@ const isWeekday = (date) => {
       setEdificios(defaultTodos);
     else
       setEdificios(res.data);
+      setLoading(false);
   }
 
   async function cargarReportes() {
     const res = await getReportes();
     setReportes(res.data);
+    setLoading(false);
   }
 
   const configBotonesActivos = (idReporte) =>
@@ -215,6 +222,8 @@ const isWeekday = (date) => {
     else
       setPisos(res.data);
 
+      setLoading(false);
+
   }
 
   async function cargarHorarios(idEdificio) {
@@ -227,6 +236,8 @@ const isWeekday = (date) => {
         setHorarios(defaultTodos);
       else
         setHorarios(res.data);
+
+        setLoading(false);
     }
 
   async function handleEdificiosChange(idEdificio) {
@@ -247,7 +258,9 @@ const isWeekday = (date) => {
   async function handleReporteChange(idReporte) {
     if (idReporte)
     {
+      
       resetValues();
+      setLoading(true);
       await cargarGerencias();
       await cargarUsuarios();
       await cargarEdificios();
@@ -270,6 +283,12 @@ const isWeekday = (date) => {
       <div>
         <Header />
         <Sidebar />
+
+        {loading ? (
+      <Container maxWidth="sm">
+        <ReactLoading type={"spin"} color={"#fff"} height={'50px'} width={'50px'}/>
+      </Container>
+      ) : ( 
         <div>
           <br/>
           <Container maxWidth="sm">
@@ -546,7 +565,7 @@ const isWeekday = (date) => {
             </div>   
           </form>
           </Container>
-        </div>
+        </div>)}
         <br/>
       </div>
       );

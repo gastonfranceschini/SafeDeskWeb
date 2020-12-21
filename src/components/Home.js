@@ -1,11 +1,36 @@
-import React from 'react';
+import React, { Component, useEffect, useState } from "react";
 import Sidebar from './Sidebar2';
 import '../utils/App.css';
 import Header from '../shared/Header'
 import { Container, Checkbox, FormControl, FormGroup, FormControlLabel, FormHelperText } from "@material-ui/core";
+import { getUser } from '../utils/auth-helper';
+import swal from "sweetalert2";
 
 
 const Home = (props) => {
+
+  useEffect(() => {
+
+    if (getUser().CambioPassObligatorio == 1)
+    {
+      swal
+      .fire({
+        title: "Advertencia",
+        text: "Debe realizar un cambio de password antes de continuar!",
+        icon: "warning",
+        confirmButtonColor: "#009bdb",
+        confirmButtonText: "OK",
+        animation: true,
+      })
+      .then((result) => {
+        if (result.value) { 
+          window.location.replace("/Contrasena");
+        }
+      });
+    }
+    
+}, []);
+
   return ( 
     <div className="App">
       <Header />

@@ -7,6 +7,7 @@ import * as Api from '../apis/ReportesAPI';
 import Header from '../shared/Header';
 import Sidebar from './Sidebar2';
 import * as ReportesAPI from "../apis/ReportesAPI";
+import ReactLoading from 'react-loading';
 
 import { useAlert } from 'react-alert';
 
@@ -18,7 +19,10 @@ const Administracion = (props) => {
   const [turnosActivo, setTurnosActivo] = useState(true)
   const [diagnosticosActivo, setDiagnosticosActivo] = useState(true)
 
+  const [loading, setLoading] = useState(true)
+
   useEffect(() => {
+      setLoading(true);
       getConfig(CONFIG_TURNOS);
       getConfig(CONFIG_DIAGNOSTICOS);
       
@@ -42,6 +46,7 @@ const Administracion = (props) => {
     ReportesAPI.getConfig(nombreConfig)
     .then(response => {
       setConfig(nombreConfig,response.data.valor == 1 ? true : false)
+      setLoading(false);
     })          
     .catch(function(error) {
       if (error.response == undefined)
@@ -75,6 +80,7 @@ const Administracion = (props) => {
         .then(response => {
           alert.show("Configurado " + configNombre + " correctamente!");
           setDone(true);
+          setLoading(false);
         })          
             .catch(function(error) {
               if (error.response == undefined)
@@ -91,15 +97,21 @@ const Administracion = (props) => {
     },
     onSubmit: (values) => {
       const { reservaTurno,autoDiagnostico } = values;
+      setLoading(true);
       guardarConfig(CONFIG_DIAGNOSTICOS,diagnosticosActivo);
       guardarConfig(CONFIG_TURNOS,turnosActivo);
     },
   });
-
+  
   return ( 
     <div>
       <Header />
       <Sidebar />
+      {loading ? (
+      <Container maxWidth="sm">
+        <ReactLoading type={"spin"} color={"#fff"} height={'50px'} width={'50px'}/>
+      </Container>
+      ) : ( 
       <div>
         <Container maxWidth="sm">
           <h1 className='ExpertaText'>Administracion:</h1>
@@ -112,6 +124,8 @@ const Administracion = (props) => {
                 flexDirection: "column",
               }}
             >
+             
+                
               <FormControl component="fieldset" className={classes.formControl}>
                 <FormGroup>
                   <FormControlLabel
@@ -126,14 +140,18 @@ const Administracion = (props) => {
                   />
                   </FormGroup>
                    </FormControl>
-              <Button
-                style={{ alignSelf: "center" ,textTransform: "none"}}
-                variant="contained"
-                type= 'submit'>Guardar cambios</Button>
+
+            <Button
+              style={{ alignSelf: "center" ,textTransform: "none", textAlign: "center", backgroundColor: "#0F1150", color: "white" }}
+              variant="contained"
+              type= 'submit'>Guardar cambios</Button>  
+                  
+      
+            
             </form>
           </div>
         </Container>
-      </div>
+      </div>)}
     </div>
   );
 }

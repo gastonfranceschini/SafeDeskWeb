@@ -8,6 +8,7 @@ import { FixedSizeList as List } from 'react-window';
 import { useAlert } from 'react-alert';
 import TodayIcon from '@material-ui/icons/Today';
 import Divider from "@material-ui/core/Divider";
+import ReactLoading from 'react-loading';
 
 
 const MisReservas = (prop) => {
@@ -15,10 +16,12 @@ const MisReservas = (prop) => {
   const alert = useAlert();
   const [turnosActivos, setTurnosActivos] = useState([])
   const [turnosHistoricos, setTurnosHistoricos] = useState([])
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    setLoading(true);
     getTurnosActivos();
-    getTurnosHistorico();
+    getTurnosHistorico(); 
   }, []);
   
 
@@ -35,7 +38,7 @@ const MisReservas = (prop) => {
       var result = [];
       for(var i in response.data)
           result.push("Fecha: " + getParsedDate(response.data[i].FechaTurno.substr(0,10)) + " Sitio: " + response.data[i].Edificio + " " + response.data[i].Piso + ", Horario: " + response.data[i].Horario);
-
+          setLoading(false);
           setTurnosHistoricos(result);
     })          
     .catch(function(error) {
@@ -52,7 +55,7 @@ const MisReservas = (prop) => {
       var result = [];
       for(var i in response.data)
           result.push("Fecha: " + getParsedDate(response.data[i].FechaTurno.substr(0,10)) + " Sitio: " + response.data[i].Edificio + " " + response.data[i].Piso + ", Horario: " + response.data[i].Horario);
-
+          setLoading(false);
       setTurnosActivos(result);
     })          
     .catch(function(error) {
@@ -103,6 +106,12 @@ const MisReservas = (prop) => {
       <div>
         <Header/>
         <Sidebar/>
+
+        {loading ? (
+      <Container maxWidth="sm">
+        <ReactLoading type={"spin"} color={"#fff"} height={'50px'} width={'50px'}/>
+      </Container>
+      ) : ( 
         <div>
           <Container maxWidth="sm">
             <br/>
@@ -119,7 +128,7 @@ const MisReservas = (prop) => {
             <ListaTurnosHistoricos/>
             <br/>
           </Container>
-        </div>
+        </div> )}
       </div>
     )
 }

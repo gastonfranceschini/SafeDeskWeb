@@ -10,6 +10,7 @@ import Grid from "@material-ui/core/Grid";
 import { useAlert } from 'react-alert';
 import swal from "sweetalert2";
 import * as Yup from "yup";
+import ReactLoading from 'react-loading';
 
 import {
     MenuItem,
@@ -43,7 +44,7 @@ const Reserva = () => {
     const [fechaSel, setFechaSel] = useState();
     const alert = useAlert();
     const [done, setDone] = useState(false);
-
+    const [loading, setLoading] = useState(true);
     const [cupoE, setCupoE] = useState(0);
     const [cupoP, setCupoP] = useState(0);
     const [cupoH, setCupoH] = useState(0);
@@ -73,6 +74,7 @@ const Reserva = () => {
         },
         onSubmit: (values) => {
           const { fecha, usuario, edificio, piso, hora } = values;
+          setLoading(true);
           guardarReserva(usuario, fechaSel, piso, edificio, hora);
           setDone(true);
         },
@@ -86,17 +88,18 @@ const Reserva = () => {
         setFechaSel(fechaAux);
         const res = await getEdificios(fechaAux);
         setEdificios(res.data);
+        setLoading(false);
       }
 
       async function handleEdificiosChange(idEdificio) {
         if (idEdificio)
         {
-
           const res = await getPisos(idEdificio,fechaSel);
           setPisos(res.data);
           const res2 = await getHoras(idEdificio,fechaSel);
           setHorarios(res2.data);
           setCupoEdificio(idEdificio);
+          setLoading(false);
         }
       }
 
@@ -107,6 +110,7 @@ const Reserva = () => {
             .then(response => {
               alert.show("Reserva grabada correctamente!");
               setDone(true);
+              setLoading(false);
             })          
                 .catch(function(error) {
                   if (error.response == undefined)
@@ -128,8 +132,10 @@ const Reserva = () => {
       }
 
       async function cargarUsuarios() {
+        setLoading(true);
         const res = await getUsuariosDependientes();
         setUsuarios(res.data);
+        setLoading(false);
       }
 
       const isDiagActive = () => {
@@ -216,6 +222,12 @@ const Reserva = () => {
     <div>
       <Header />
       <Sidebar />
+
+      {loading ? (
+      <Container maxWidth="sm">
+        <ReactLoading type={"spin"} color={"#fff"} height={'50px'} width={'50px'}/>
+      </Container>
+      ) : ( 
       <div>
         <br/>
         <Container maxWidth="sm">
@@ -423,7 +435,7 @@ const Reserva = () => {
                 </div>   
             </form>
         </Container>
-      </div>
+      </div>)}
       <br/>
       { done ? <Redirect to="/Home"/> : null }
     </div>

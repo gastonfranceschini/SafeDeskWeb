@@ -5,7 +5,7 @@ import { withRouter, Link, Redirect } from "react-router-dom";
 import * as Yup from "yup";
 import Button from "@material-ui/core/Button";
 import { useAlert } from 'react-alert';
-import { getUser } from '../utils/auth-helper';
+import { getUser ,setUser} from '../utils/auth-helper';
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from "@material-ui/core/styles";
 import { FormControl, TextField, InputLabel, Typography } from "@material-ui/core";
@@ -51,6 +51,9 @@ const Contrasena = () => {
         changePassword(getUser().userId, formik.values.actualPassword, formik.values.newPassword)
             .then(response => {
               alert.show("Contraseña cambiada correctamente!");
+              var user = getUser();
+              user.CambioPassObligatorio = 0;
+              setUser(user);
               setDone(true);
             })          
                 .catch(function(error) {

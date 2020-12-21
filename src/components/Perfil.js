@@ -20,9 +20,9 @@ const Perfil = () => {
             <Sidebar/>
         </div>
         <div className='divPerfil'>
-            <div>
-                <h1 className='ExpertaText'>Perfil</h1>
-            </div>
+        <h1 className='ExpertaText'>Perfil</h1>
+                <br></br>
+            
             <Paper className='paperPerfil'>
                 <div>
                     <p className='txtTit'>Nombre y Apellido</p>
@@ -30,7 +30,7 @@ const Perfil = () => {
                 </div>
                 <div>
                     <p className='txtTit'>DNI</p>
-                    <p className='txtUsr'>{getUser().Nombre}</p>
+                    <p className='txtUsr'>{getUser().userId}</p>
                 </div>
                 <div>
                     <p className='txtTit'>E-mail</p>
@@ -38,10 +38,10 @@ const Perfil = () => {
                 </div>
                 <div>
                     <p className='txtTit'>Gerencia</p>
-                    <p className='txtUsr'>{getUser().Nombre}</p>
+                    <p className='txtUsr'>{getUser().Gerencia}</p>
                 </div>
                 <div>
-                    <p className='txtTit'>Contrasena</p>
+                    <p className='txtTit'>Contraseña</p>
                     <Button
                     style={{ marginTop: "5pt", alignSelf: "left" ,textTransform: "none", backgroundColor: "#0F1150", color: "white" }}
                     variant="contained"
@@ -49,6 +49,7 @@ const Perfil = () => {
                     >Cambiar</Button>
                 </div>
             </Paper>
+            <br/>
         </div>
     </div>
   );

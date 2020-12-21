@@ -224,6 +224,7 @@ const Diagnostico = (props) => {
                 className={classes.btn}
                 variant="contained"
                 type= 'submit'>Enviar</Button>
+                
             </form>
           </div>
         </Container>
