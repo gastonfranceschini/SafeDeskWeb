@@ -142,7 +142,7 @@ const MisReservas = (prop) => {
    
   
   const ListaTurnosActivos = () => (
-    <List style={{fontWeight: 'bold',textAlign: "center",borderColor: 'black', 
+    <List className="reservasActivas" style={{fontWeight: 'bold',textAlign: "center",borderColor: 'black', 
     borderWidth: 1 }}
       height={200}
       width={550}
@@ -153,7 +153,7 @@ const MisReservas = (prop) => {
   );
 
   const ListaTurnosHistoricos = () => (
-    <List style={{fontWeight: 'bold',textAlign: "center"}}
+    <List className="reservasHistoricas" style={{fontWeight: 'bold',textAlign: "center"}}
       height={200}
       width={550}
       itemSize={35}

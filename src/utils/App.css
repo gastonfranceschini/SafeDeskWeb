@@ -106,3 +106,15 @@ body {
 .loginBox{
   padding-top: 5vh;
 }
+.textUser div {
+  padding-right: 5px;
+}
+@media screen and (max-width: 969px) {
+  .divPerfil {
+    padding-left: 30px !important;
+    padding-right: 30px !important;
+  }
+  .reservasActivas, .reservasHistoricas {
+    width: 80vw !important;
+  }
+}

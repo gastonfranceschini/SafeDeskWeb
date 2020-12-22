@@ -76,7 +76,7 @@ function Navbar() {
             </div>
           </b>
           <b className='textUser' onClick={()=>{window.location.pathname = '/Perfil';}}>
-            <div style={{textAlign: 'right'}}>
+            <div style={{ textAlign: 'right' }}>
               {getUser().Nombre}
               <br/>
               {getUser().Email}
