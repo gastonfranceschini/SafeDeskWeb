@@ -7,7 +7,7 @@ import '../utils/Sidebar.css';
 import { IconContext } from 'react-icons';
 import * as ReportesAPI from "../apis/ReportesAPI";
 import { useAlert } from 'react-alert';
-import { logoutUser,getToken,getUser } from "../utils/auth-helper";
+import { logoutUser, getUser } from "../utils/auth-helper";
 
 function Navbar() {
 

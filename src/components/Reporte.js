@@ -1,10 +1,9 @@
-import React, { Component, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Container from "@material-ui/core/Container"
 import Header from "../shared/Header"
 import Sidebar from "./Sidebar2"
-import DatePicker, { registerLocale } from "react-datepicker";
+import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { makeStyles } from "@material-ui/core/styles";
 import { setMinutes, getDay, addDays, formatISO } from "date-fns";
 import { useFormik } from "formik";
 import { useAlert } from 'react-alert';

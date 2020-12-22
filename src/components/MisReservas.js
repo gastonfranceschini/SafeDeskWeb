@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import Container from "@material-ui/core/Container"
-import { ListItem,ListItemText } from '@material-ui/core';
 import * as TurnosAPI from "../apis/TurnosAPI";
 import Header from "../shared/Header"
 import Sidebar from "./Sidebar2"

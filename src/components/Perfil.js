@@ -1,11 +1,9 @@
 import Header from '../shared/Header';
 import Sidebar from './Sidebar2';
-import React, { Component, useEffect, useState } from "react";
-import { useAlert } from 'react-alert';
+import React from "react";
 import Button from "@material-ui/core/Button";
 import { getUser } from '../utils/auth-helper';
 import Paper from '@material-ui/core/Paper';
-import { withRouter, Link, Redirect } from "react-router-dom";
 
 const Perfil = () => {
 
