@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import Container from "@material-ui/core/Container"
-import { ListItem,ListItemText } from '@material-ui/core';
 import * as TurnosAPI from "../apis/TurnosAPI";
 import Header from "../shared/Header"
 import Sidebar from "./Sidebar2"
@@ -87,7 +86,7 @@ const MisReservas = (prop) => {
         <h3>{turnosActivos[0]}</h3>
         <br/>
         <p>
-        <QRCode value={turnoActivo} />
+        <QRCode value={"" + turnoActivo} />
         </p>
       </div>
     )
@@ -143,7 +142,7 @@ const MisReservas = (prop) => {
    
   
   const ListaTurnosActivos = () => (
-    <List style={{fontWeight: 'bold',textAlign: "center",borderColor: 'black', 
+    <List className="reservasActivas" style={{fontWeight: 'bold',textAlign: "center",borderColor: 'black', 
     borderWidth: 1 }}
       height={200}
       width={550}
@@ -154,7 +153,7 @@ const MisReservas = (prop) => {
   );
 
   const ListaTurnosHistoricos = () => (
-    <List style={{fontWeight: 'bold',textAlign: "center"}}
+    <List className="reservasHistoricas" style={{fontWeight: 'bold',textAlign: "center"}}
       height={200}
       width={550}
       itemSize={35}

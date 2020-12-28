@@ -1,8 +1,8 @@
-import React, { Component, useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Sidebar from './Sidebar2';
 import '../utils/App.css';
 import Header from '../shared/Header'
-import { Container, Checkbox, FormControl, FormGroup, FormControlLabel, FormHelperText } from "@material-ui/core";
+import { Container } from "@material-ui/core";
 import { getUser } from '../utils/auth-helper';
 import swal from "sweetalert2";
 

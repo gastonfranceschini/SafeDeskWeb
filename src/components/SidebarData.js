@@ -5,7 +5,6 @@ import ReservasIcon from '@material-ui/icons/ImportContacts';
 import ReportesIcon from '@material-ui/icons/Assessment';
 import AdminIcon from '@material-ui/icons/AssignmentInd';
 import LogoutIcon from '@material-ui/icons/ExitToApp';
-import { SwitchVideoTwoTone } from '@material-ui/icons';
 import { getUser } from "../utils/auth-helper";
 
 

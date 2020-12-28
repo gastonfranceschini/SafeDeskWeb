@@ -1,7 +1,7 @@
-import React, { Component, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
-import { Container, Checkbox, FormControl, FormGroup, FormControlLabel, FormHelperText } from "@material-ui/core";
+import { Container, Checkbox, FormControl, FormGroup, FormControlLabel } from "@material-ui/core";
 import { useFormik } from "formik";
 import * as Api from '../apis/ReportesAPI';
 import Header from '../shared/Header';

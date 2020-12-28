@@ -7,7 +7,7 @@ import '../utils/Sidebar.css';
 import { IconContext } from 'react-icons';
 import * as ReportesAPI from "../apis/ReportesAPI";
 import { useAlert } from 'react-alert';
-import { logoutUser,getToken,getUser } from "../utils/auth-helper";
+import { logoutUser, getUser } from "../utils/auth-helper";
 
 function Navbar() {
 
@@ -76,7 +76,7 @@ function Navbar() {
             </div>
           </b>
           <b className='textUser' onClick={()=>{window.location.pathname = '/Perfil';}}>
-            <div style={{textAlign: 'right'}}>
+            <div style={{ textAlign: 'right' }}>
               {getUser().Nombre}
               <br/>
               {getUser().Email}

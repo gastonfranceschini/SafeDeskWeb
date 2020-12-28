@@ -1,15 +1,12 @@
-import React, { Component, useEffect, useState } from "react";
-import { withRouter, Link, Redirect } from "react-router-dom";
-import DatePicker, { registerLocale } from "react-datepicker";
+import React, { useEffect, useState } from "react";
+import { Redirect } from "react-router-dom";
+import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { makeStyles } from "@material-ui/core/styles";
 import { setMinutes, getDay, addDays, formatISO } from "date-fns";
 import { useFormik } from "formik";
 import Container from "@material-ui/core/Container";
-import Grid from "@material-ui/core/Grid";
 import { useAlert } from 'react-alert';
 import swal from "sweetalert2";
-import * as Yup from "yup";
 import ReactLoading from 'react-loading';
 
 import {

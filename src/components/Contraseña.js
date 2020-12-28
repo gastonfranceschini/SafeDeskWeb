@@ -1,14 +1,14 @@
 import Header from '../shared/Header';
 import Sidebar from './Sidebar2';
-import React, { Component, useEffect, useState } from "react";
-import { withRouter, Link, Redirect } from "react-router-dom";
+import React, { useState } from "react";
+import { Redirect } from "react-router-dom";
 import * as Yup from "yup";
 import Button from "@material-ui/core/Button";
 import { useAlert } from 'react-alert';
 import { getUser ,setUser} from '../utils/auth-helper';
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from "@material-ui/core/styles";
-import { FormControl, TextField, InputLabel, Typography } from "@material-ui/core";
+import { FormControl, TextField, InputLabel } from "@material-ui/core";
 import { useFormik } from "formik";
 import { changePassword } from '../apis/UsuariosAPI';
 
