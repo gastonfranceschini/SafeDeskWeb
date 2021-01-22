@@ -69,7 +69,14 @@ export const SidebarData = (autoDiagnostico,reservarTurno) => {
             menu.push(btnMisReservas);
             menu.push(btnCerrarSesion);
           break;
-        case SUPERVISOR || GERENTE:
+        case SUPERVISOR:
+            if (autoDiagnostico == 1) menu.push(btnAutoDiagnostico);
+            if (reservarTurno == 1) menu.push(btnReservar);
+            menu.push(btnMisReservas);
+            menu.push(btnReportes);
+            menu.push(btnCerrarSesion);
+          break;
+        case  GERENTE:
             if (autoDiagnostico == 1) menu.push(btnAutoDiagnostico);
             if (reservarTurno == 1) menu.push(btnReservar);
             menu.push(btnMisReservas);

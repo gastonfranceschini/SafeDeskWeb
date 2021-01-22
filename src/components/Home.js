@@ -37,19 +37,18 @@ const Home = (props) => {
       <Sidebar />
       <Container maxWidth="sm">
       <div className='HomeDescr'>
-        <h1 className='ExpertaText'>Bienvenido!</h1>
+        <h1 className='ExpertaText'>¡Bienvenido!</h1>
         <br/>
-        Safe Desk es una aplicación que nos permite a los colaboradores hacer una vuelta controlada y 
-        ordenada a la oficina y sus instalaciones.
-        <br/>
-        <br/>
-        <br/>
-        Las funciones están acordes al momento que estamos viviendo permitiendo a 
-        sus usuarios sacar turnos en días y horarios específicos con antelación.
+        Safe Desk es una herramienta que te permite reservar un puesto de trabajo para los días que vas a la oficina. 
+        De esta manera, aseguramos el cumplimiento de los protocolos para una estadía segura y ordenada.
         <br/>
         <br/>
         <br/>
-        Hacemos todo lo posible por mantener las maximas medidas de seguridad, les deseamos un buen reencuentro con sus compañeros!
+        A través de Safe Desk podrás sacar turnos en días y horarios específicos con antelación para ocupar un escritorio en el Edificio de Iberá. 
+        <br/>
+        <br/>
+        <br/>
+        Seguí estos consejos y normas de prevención para cuidarnos entre todos.
         <br/>
         <br/>
         <a href="/Reserva">
@@ -62,6 +61,5 @@ const Home = (props) => {
     </div>
   );
 }
-
  
 export default Home;

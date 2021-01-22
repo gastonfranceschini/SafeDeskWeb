@@ -148,7 +148,7 @@ const Diagnostico = (props) => {
       <Sidebar />
       <div>
         <Container className='HomeDescr' maxWidth="sm">
-          <h1 className='ExpertaText'>Diagnóstico:</h1>
+          <h1 className='ExpertaText'>AutoDiagnóstico:</h1>
           <div className={classes.root}>
             <form
               onSubmit={formik.handleSubmit}
